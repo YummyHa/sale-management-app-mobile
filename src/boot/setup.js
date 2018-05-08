@@ -1,6 +1,6 @@
 import * as Expo from 'expo';
 import React, { Component } from 'react';
-import { StyleProvider } from 'native-base';
+import { StyleProvider, Spinner } from 'native-base';
 import { Provider } from 'react-redux';
 
 import configureStore from './configureStore';

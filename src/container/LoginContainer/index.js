@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { Item, Input, Icon, Toast, Form } from 'native-base';
-import { Field, reduxForm } from 'redux-form';
+import { Field, reduxForm, formValueSelector } from 'redux-form';
+import axios from 'axios';
+import { AsyncStorage } from 'react-native';
+import { connect } from 'react-redux';
 
 import Login from '../../screens/Login';
 
@@ -37,16 +40,39 @@ class LoginForm extends Component {
     );
   }
 
-  login() {
+  checkLogin = async (email, password) => {
+    try {
+      const user = await axios.post(
+        'http://localhost:3000/api/users/login', 
+        { email, password }
+      )
+      if (!user) return false;
+
+      let header = user.headers['x-auth'];
+      await AsyncStorage.setItem('userToken', header);
+      let token = AsyncStorage.getItem('userToken');
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  }
+
+  showToastLoginFailed = () => {
+    Toast.show({
+      text: 'Enter valid Username and Password',
+      duration: 2000,
+      position: 'bottom',
+      textStyle: { textAlign: 'center' }
+    })
+  } 
+
+  async login() {
     if (this.props.valid) {
-      
-    } {
-      Toast.show({
-        text: 'Enter valid Username and Password',
-        duration: 2000,
-        position: 'bottom',
-        textStyle: { textAlign: 'center' }
-      })
+      let check = await this.checkLogin(this.props.email, this.props.password);
+      check ? this.props.navigation.navigate('Home') : this.showToastLoginFailed();
+    } else {
+      this.showToastLoginFailed();
     }
   }
 
@@ -80,4 +106,13 @@ const LoginContainer = reduxForm({
   form: 'Login'
 })(LoginForm);
 
-export default LoginContainer;
+const selector = formValueSelector('Login');
+
+LoginContainerRedux = connect(
+  state => {
+    const { email, password } = selector(state, 'email', 'password');
+    return { email, password }
+  }
+)(LoginContainer);
+
+export default LoginContainerRedux;
