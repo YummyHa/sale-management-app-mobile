@@ -6,33 +6,31 @@ import Axios from 'axios';
 import Settings from '../../screens/Settings';
 
 class SettingContainer extends Component {
+  showToast = (message) => {
+    Toast.show({
+      text: message,
+      duration: 2000,
+      position: 'bottom',
+      textStyle: { textAlign: 'center' }
+    })
+  }
+
   logOut = async () => {
     try {
       let userToken = await AsyncStorage.getItem('userToken');
-      console.log('hello')
-      console.log(userToken)
       await Axios.delete(
         'http://localhost:3000/api/users/me/token', { 
           data: {},
           headers: { 'x-auth': userToken } 
         }
       )
+      
       await AsyncStorage.removeItem('userToken');
       this.props.navigation.navigate('Auth');
 
-      Toast.show({
-        text: 'Logout successful!',
-        duration: 2000,
-        position: 'bottom',
-        textStyle: { textAlign: 'center' }
-      })
+      this.showToast('Logout successful!');
     } catch (error) {
-      Toast.show({
-        text: 'Something wrong happened!',
-        duration: 2000,
-        position: 'bottom',
-        textStyle: { textAlign: 'center' }
-      })
+      this.showToast('Something wrong happened!');
     }
   }
 

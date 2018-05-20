@@ -1,10 +1,11 @@
 import React from 'react';
-import { StackNavigator, SwitchNavigator, TabNavigator, TabBarBottom } from 'react-navigation';
+import { createStackNavigator, createBottomTabNavigator, createSwitchNavigator } from 'react-navigation'
 import { Root } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
 import { Platform } from 'react-native';
 
 import Colors from '../constants/Colors';
+import NavigationService from './NavigationService';
 
 import Login from './container/LoginContainer';
 import Products from './container/ProductContainer';
@@ -13,13 +14,25 @@ import Customers from './container/CustomerContainer';
 import Bills from './container/BillContainer';
 import Summary from './container/SummaryContainer';
 import Settings from './container/SettingContainer';
+import AddProduct from './container/AddProductContainer';
+import BarCodeScanner from './container/BarcodeScannerContainer';
+import Category from './container/CategoryContainer';
 
-const HomeStack = TabNavigator({
-  Products: { screen: Products },
-  Bills: { screen: Bills },
-  Customers: { screen: Customers },
-  Summary: { screen: Summary },
-  Settings: { screen: Settings }
+const ProductStack = createStackNavigator({
+  ProductList: Products,
+  AddProduct: AddProduct,
+  BarCodeScanner: BarCodeScanner,
+  Category: Category,
+}, {
+  headerMode: 'none'
+})
+
+const HomeStack = createBottomTabNavigator({
+  Products: ProductStack,
+  Bills: Bills,
+  Customers: Customers,
+  Summary: Summary,
+  Settings: Settings,
 }, {
   navigationOptions: ({ navigation }) => ({
     tabBarIcon: ({ focused }) => {
@@ -28,8 +41,8 @@ const HomeStack = TabNavigator({
       switch (routeName) {
         case 'Products': 
           iconName = Platform.OS === 'ios'
-            ? `ios-keypad${focused ? '' : '-outline'}`
-            : `md-keypad`;
+            ? `ios-home${focused ? '' : '-outline'}`
+            : `md-home`;
           break;
         case 'Bills': 
           iconName = Platform.OS === 'ios'
@@ -62,8 +75,6 @@ const HomeStack = TabNavigator({
       );
     },
   }),
-  tabBarComponent: TabBarBottom,
-  tabBarPosition: 'bottom',
   animationEnabled: true,
   swipeEnabled: false,
   tabBarOptions: {
@@ -72,13 +83,13 @@ const HomeStack = TabNavigator({
   }
 })
 
-const AuthStack = StackNavigator({
-  Login: { screen: Login }
+const AuthStack = createStackNavigator({
+  Login: Login
 }, {
   headerMode: 'none'
 })
 
-const App = SwitchNavigator({
+const RootStackNavigator = createSwitchNavigator({
   Auth: AuthStack, 
   Home: HomeStack,
   AuthLoading: AuthLoading
@@ -86,8 +97,16 @@ const App = SwitchNavigator({
   initialRouteName: 'AuthLoading'
 });
 
-export default () => (
-  <Root>
-    <App />
-  </Root>
-);
+export default class App extends React.PureComponent {
+  render() {
+    return (
+      <Root>
+        <RootStackNavigator 
+          ref={navigatorRef => {
+            NavigationService.setTopLevelNavigator(navigatorRef)
+          }}
+        />
+      </Root>
+    )
+  }
+}

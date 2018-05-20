@@ -6,12 +6,6 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#FBFAFA'
   },
-  priceStyle: {
-    color: Colors.tintColor
-  },
-  listProduct: {
-    marginBottom: 1,
-  },
   headerIconStyle: {
     color: Colors.tintColor
   }

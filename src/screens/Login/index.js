@@ -32,7 +32,11 @@ class Login extends Component {
         <Footer>
           <View style={{ alignItems: 'center', opacity: 0.5, flexDirection: 'row' }}>
             <View padder>
-              <Text style={{ color: '#000' }}>Made with love by Khanh Ha</Text>
+              <Text style={{ color: '#000' }}>Made with</Text>
+            </View>
+            <Icon ios='ios-heart' android='md-heart' style={{ color: 'red' }} />
+            <View padder>
+              <Text style={{ color: '#000' }}>by Khanh Ha</Text>
             </View>
           </View>
         </Footer>

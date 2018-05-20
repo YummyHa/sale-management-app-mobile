@@ -1,37 +1,63 @@
-import React, { Component } from "react";
-import { Container, Content, Header, Left, Body, Right, Text, Title, Button, Icon } from 'native-base';
+import React from "react";
+import { Container, Content, Header, Left, Body, Right, Text, Title, Button, Icon, 
+  ListItem, Thumbnail, Spinner } from 'native-base';
+import { FlatList } from 'react-native';
 
 import styles from './styles';
 
-class Products extends Component {
+class Products extends React.PureComponent {
+  _renderItem = ({ item }) => {
+    return (
+      <ListItem
+        thumbnail
+        style={styles.listProduct}
+      >
+        <Thumbnail square source={require("../../images/default-store-350x350.jpg")} />
+        <Body>
+          <Text>{item.name}</Text>
+          <Text note>serial: {item.serial}</Text>
+          <Text note>quantity: {item.quantity}</Text>
+          {item.attributes.map((p, i) => (
+            <Text note key={p._id}>{p.name}: {p.value}</Text>
+          ))}
+        </Body>
+        <Right>
+          <Text style={styles.priceStyle}>${item.sell_price[0].value}</Text>
+        </Right>
+      </ListItem>
+    );
+  }
+
   render() {
     return (
       <Container style={styles.container}>
         {/* Header */}
         <Header>
-          {/* Header Left */}
           <Left>
-            <Button transparent>
-              <Icon 
-                active
-                name='menu'
-                onPress={() => {}}
-              />
+            <Button transparent onPress={() => {}}>
+              <Icon active ios='ios-menu' android='md-menu' style={styles.headerIconStyle} />
             </Button>
           </Left>
 
-          {/* Header Body */}
           <Body>
             <Title>Products</Title>
           </Body>
 
-          {/* Header Right */}
-          <Right />
+          <Right>
+            <Button transparent onPress={() => {this.props.navigation.navigate('AddProduct')}}>
+              <Icon active ios='ios-add' android='md-add' style={styles.headerIconStyle}/>
+            </Button>
+          </Right>
         </Header>
 
         {/* Content */}
         <Content>
-          <Text>This is product screen</Text>
+          {this.props.isFetching ? <Spinner /> : 
+          <FlatList 
+            data={this.props.data}
+            renderItem={this._renderItem}
+            keyExtractor={item => item._id}
+          />}
         </Content>
       </Container>
     ); 
