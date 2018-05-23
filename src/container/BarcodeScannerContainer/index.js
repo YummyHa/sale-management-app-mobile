@@ -6,7 +6,7 @@ import BarcodeScanner from '../../screens/BarcodeScanner';
 
 class BarcodeScannerContainer extends React.PureComponent {
   _handleBarCodeRead = data => {
-    this.props.changeFieldValue('serial', data);
+    this.props.change('serial', data.data);
     this.props.navigation.goBack();
   }
 
@@ -19,13 +19,8 @@ class BarcodeScannerContainer extends React.PureComponent {
 }
 
 const BarcodeScannerContainerRedux = reduxForm({
-  form: 'Product'
-}, mapDispatchToProps = (dispatch) => {
-  return {
-    changeFieldValue: (field, value) => {
-      dispatch(change(form, field, value))
-    }
-  }
+  form: 'Product',
+  destroyOnUnmount: false
 })(BarcodeScannerContainer);
 
 export default BarcodeScannerContainerRedux;

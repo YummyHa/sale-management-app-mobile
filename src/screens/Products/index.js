@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Content, Header, Left, Body, Right, Text, Title, Button, Icon, 
   ListItem, Thumbnail, Spinner } from 'native-base';
-import { FlatList } from 'react-native';
+import { FlatList, StatusBar } from 'react-native';
 
 import styles from './styles';
 
@@ -31,6 +31,8 @@ class Products extends React.PureComponent {
   render() {
     return (
       <Container style={styles.container}>
+        <StatusBar translucent={false} />
+
         {/* Header */}
         <Header>
           <Left>

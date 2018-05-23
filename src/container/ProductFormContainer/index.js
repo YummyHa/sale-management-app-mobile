@@ -143,13 +143,15 @@ class ProductFormRedux extends React.PureComponent {
         selected={this.state.selected}
         onChangeCategory={value => this.onChangeCategory(value)}
         categories={this.props.categories}
+        destroy={() => this.props.destroy()}
       />
     );
   }
 }
 
 const ProductFormContainerRedux = reduxForm({
-  form: 'Product'
+  form: 'Product',
+  destroyOnUnmount: false
 })(ProductFormRedux)
 
 const selector = formValueSelector('Product');

@@ -2,6 +2,7 @@ import React from 'react';
 import { Header, Left, Right, Body, View, Container, Button, Icon, Title, Text,
   Content } from 'native-base';
 import { BarCodeScanner, Permissions } from 'expo';
+import { StatusBar } from 'react-native';
 
 import styles from './styles';
 
@@ -21,9 +22,10 @@ class BarCodeScannerScreen extends React.Component {
     if (!this.state.isPermissionsGranted) {
       return (
         <Container>
+          <StatusBar translucent={false} />
           <Header>
             <Left>
-              <Button transparent onPress={() => this.props.navigation.goBack()} >
+              <Button transparent onPress={() => this.props.navigation.goBack()}>
                 <Icon ios='ios-arrow-back' android='md-arrow-back' />
               </Button>
             </Left>

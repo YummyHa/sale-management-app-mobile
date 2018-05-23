@@ -43,7 +43,7 @@ class LoginForm extends Component {
   checkLogin = async (email, password) => {
     try {
       const user = await axios.post(
-        'http://localhost:3000/api/users/login', 
+        'http://192.168.1.107:3000/api/users/login',
         { email, password }
       )
       if (!user) return false;
