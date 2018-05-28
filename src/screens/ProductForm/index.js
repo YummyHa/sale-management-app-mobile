@@ -31,8 +31,12 @@ class ProductForm extends React.PureComponent {
             }
           </View>
         </TouchableOpacity>
+        
+        <View style={styles.borderContainer}>
+          {this.props.form}
+        </View>
 
-        {this.props.form}
+        <View style={styles.divideView} />
 
         <View style={styles.category}>
           <Text style={styles.categoryLabel}>Category:</Text>
@@ -53,6 +57,21 @@ class ProductForm extends React.PureComponent {
             <Icon name='add' style={styles.barcodeIconStyle} />
           </Button>
         </View>
+
+        <View style={styles.divideView} />
+
+        <Form style={styles.borderContainer}>
+          {this.props.attrRows}
+
+          <Item style={styles.attributeStyles}>
+            <Icon style={styles.addAttrIcon} ios='ios-add-circle-outline' android='md-add-circle'/>
+            <TouchableOpacity onPress={() => this.props.onAddAttr()}>
+              <Text style={styles.addAttrText}>Add attribute</Text>
+            </TouchableOpacity>
+          </Item>
+        </Form>
+
+        <View style={styles.divideView} />
       </View>
     ); 
   }

@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { ActionSheet, Form, Item, Input, Text, Button, Icon, View, Picker } from 'native-base';
+import { ActionSheet, Form, Item, Input, Text, Button, Icon, View, Picker, Toast } from 'native-base';
 import { Field, reduxForm, formValueSelector } from 'redux-form';
-import { TouchableOpacity } from 'react-native'
+import { TouchableOpacity, Alert } from 'react-native'
+import { ImagePicker, Permissions } from 'expo'
 
 import NavigationService from '../../NavigationService';
 
@@ -81,6 +82,46 @@ class ProductFormRedux extends React.PureComponent {
     );
   }
 
+  _requestCameraPermission = async () => {
+    const camera = await Permissions.askAsync(Permissions.CAMERA);
+    const cameraRoll = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    camera.status === 'granted' && cameraRoll.status === 'granted'
+    ? this._pickActionComplete() 
+    : alert('Need camera permission to use this function!')
+  }
+
+  _pickActionComplete() {
+    if (this.state.clicked === 'Take Picture') {
+      this._takePhoto();
+    } else if (this.state.clicked === 'Pick from gallery') {
+      this._pickImage();
+    }
+  }
+
+  _takePhoto = async () => {
+    let pickerResult = await ImagePicker.launchCameraAsync({
+      allowsEditing: true,
+      aspect: [1, 1],
+      base64: true
+    })
+
+    this._handleImagePicked(pickerResult);
+  }
+
+  _pickImage  = async () => {
+    let pickerResult = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [1, 1],
+      base64: true
+    })
+
+    this._handleImagePicked(pickerResult);
+  }
+
+  _handleImagePicked = async pickerResult => {
+    // update image field
+  }
+
   onPickImageAction = () => {
     ActionSheet.show({
       options: CAMERA_OPTIONS,
@@ -88,13 +129,35 @@ class ProductFormRedux extends React.PureComponent {
       title: 'Pick one'
     }, buttonIndex => {
       this.setState({ clicked: CAMERA_OPTIONS[buttonIndex] }, () => {
-        // do something when pick is done
+        this._requestCameraPermission();
       });
     })
   }
 
   onChangeCategory(value) {
     this.setState({ selected: value })
+  }
+
+  onAddAttr() {
+    let check = false;
+    for (let item of this.props.attr) {
+      if (item.name === 'Attribute Name' || item.value === '') {
+        check = true;
+        break;
+      }
+    }
+
+    if (check) {
+      Toast.show({
+        text: 'Attribute name and value can not be Empty',
+        position: 'bottom',
+        type: 'warning',
+        duration: 1500
+      });
+    } else {
+      this.props.addNewAttr();
+      console.log(this.props.attr)
+    }
   }
 
   render() {
@@ -133,17 +196,45 @@ class ProductFormRedux extends React.PureComponent {
       </Form>
     )
 
+    let attrRows = this.props.attr.map((r, i) => {
+      return <Item key={r.name} style={styles.inputContainerStyle}>
+        <TouchableOpacity style={{ width: 150 }} onPress={() => {}}>
+          <Text>{r.name}</Text>
+        </TouchableOpacity>
+        <Input 
+          placeholder='undefined value'
+          onChangeText={value => this.props.updateAttr({ prop: 'value', value: value, index: i })}
+          value={r.value}
+        />
+        <Button transparent>
+          <Icon 
+            name='close' 
+            style={{ color: 'red' }}
+            onPress={() => Alert.alert(
+              'Delete', 'Are you sure you wanna delete this Attribute', [
+                { text: 'Cancel', style: 'cancel' },
+                { text: 'OK', onPress: () => this.props.removeAttr(i) }
+              ],
+              { cancelable: true }
+            )}
+          />
+        </Button>
+      </Item>
+    })
+
     return (
       <ProductForm 
         image={this.props.image}
         onPickImageAction={() => this.onPickImageAction()}
         form={form}
+        attrRows={attrRows}
         cate_name={this.props.cate_name}
         navigation={this.props.navigation}
         selected={this.state.selected}
         onChangeCategory={value => this.onChangeCategory(value)}
         categories={this.props.categories}
         destroy={() => this.props.destroy()}
+        onAddAttr={() => this.onAddAttr()}
       />
     );
   }
@@ -160,10 +251,10 @@ ProductFormContainer = connect(
   state => {
     const { serial, name, description, sell_price, origin_price, quantity } = 
       selector(state, 'serial', 'name', 'description', 'sell_price', 'origin_price', 'quantity');
-    const { cate_id, cate_name } = state.add_product;
     const { categories } = state.category;
+    const { attr } = state.product_form;
 
-    return { serial, name, description, sell_price, origin_price, quantity, cate_id, cate_name }
+    return { serial, name, description, sell_price, origin_price, quantity, categories, attr }
   },
   actions
 )(ProductFormContainerRedux);

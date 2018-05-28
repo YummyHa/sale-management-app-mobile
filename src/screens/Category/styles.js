@@ -9,8 +9,12 @@ const styles = StyleSheet.create({
   headerIconStyle: {
     color: Colors.tintColor
   },
-  headerBackText: {
+  headerText: {
     color: Colors.tintColor
+  },
+  itemIcon: {
+    fontSize: 20,
+    color: '#dadada'
   }
 });
 

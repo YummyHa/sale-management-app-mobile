@@ -6,9 +6,14 @@ import CategoryScreen from '../../screens/Category';
 import * as actions from './actions';
 
 class CategoryContainer extends Component {
+  async componentDidMount() {
+    await this.props.fetchListCategories();
+  }
   render() {
     return (
       <CategoryScreen 
+        data={this.props.categories}
+        isFetching={this.props.isFetchingCategories}
         navigation={this.props.navigation}
       />
     )
@@ -16,9 +21,9 @@ class CategoryContainer extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { } = state.category;
+  const { categories, isFetchingCategories } = state.category;
 
-  return { }
+  return { categories, isFetchingCategories }
 }
 
 export default connect(mapStateToProps, actions)(CategoryContainer);

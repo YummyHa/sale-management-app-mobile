@@ -36,7 +36,7 @@ class Products extends React.PureComponent {
         {/* Header */}
         <Header>
           <Left>
-            <Button transparent onPress={() => {}}>
+            <Button transparent onPress={() => this.props.navigation.openDrawer()}>
               <Icon active ios='ios-menu' android='md-menu' style={styles.headerIconStyle} />
             </Button>
           </Left>
@@ -46,8 +46,8 @@ class Products extends React.PureComponent {
           </Body>
 
           <Right>
-            <Button transparent onPress={() => {this.props.navigation.navigate('AddProduct')}}>
-              <Icon active ios='ios-add' android='md-add' style={styles.headerIconStyle}/>
+            <Button transparent onPress={() => this.props.navigation.navigate('AddProduct')}>
+              <Text style={styles.headerIconStyle}>Add</Text>
             </Button>
           </Right>
         </Header>

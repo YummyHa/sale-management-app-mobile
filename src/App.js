@@ -1,5 +1,6 @@
 import React from 'react';
-import { createStackNavigator, createBottomTabNavigator, createSwitchNavigator } from 'react-navigation'
+import { createStackNavigator, createBottomTabNavigator, createSwitchNavigator,
+  createDrawerNavigator } from 'react-navigation'
 import { Root } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
 import { Platform } from 'react-native';
@@ -17,9 +18,17 @@ import Settings from './container/SettingContainer';
 import AddProduct from './container/AddProductContainer';
 import BarCodeScanner from './container/BarcodeScannerContainer';
 import Category from './container/CategoryContainer';
+import Sidebar from './container/SidebarContainer';
+
+const ProductDrawer = createDrawerNavigator({
+  ProductList: Products
+}, {
+  initialRouteName: 'ProductList',
+  contentComponent: props => <Sidebar {...props} />
+});
 
 const ProductStack = createStackNavigator({
-  ProductList: Products,
+  ProductHome: ProductDrawer,
   AddProduct: AddProduct,
   BarCodeScanner: BarCodeScanner,
   Category: Category,

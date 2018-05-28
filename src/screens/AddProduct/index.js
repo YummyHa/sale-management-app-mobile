@@ -1,6 +1,7 @@
 import React from "react";
 import { Container, Content, Header, Left, Body, Right, Text, Title, Button, Icon, 
   ListItem, Thumbnail, Spinner } from 'native-base';
+import { Platform } from 'react-native';
 
 import styles from './styles';
 
@@ -13,6 +14,7 @@ class AddProduct extends React.PureComponent {
           <Left>
             <Button transparent onPress={() => this.props.navigation.goBack()}>
               <Icon active ios='ios-arrow-back' android='md-arrow-back' style={styles.headerIconStyle} />
+              {Platform.OS === 'ios' ? <Text style={styles.headerBackText}>Back</Text> : <View />}
             </Button>
           </Left>
 
@@ -20,11 +22,7 @@ class AddProduct extends React.PureComponent {
             <Title>Add Product</Title>
           </Body>
 
-          <Right>
-            <Button transparent onPress={() => this.props.onCreateProduct()}>
-              <Icon active ios='ios-checkmark' android='md-checkmark' style={styles.headerIconStyle} />
-            </Button>
-          </Right>
+          <Right />
         </Header>
 
         {/* Content */}
