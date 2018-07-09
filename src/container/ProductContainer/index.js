@@ -8,6 +8,7 @@ import * as actions from './actions';
 class ProductContainer extends Component {
   async componentDidMount() {
     await this.props.fetchListProducts();
+    await this.props.fetchListCategories();
   }
 
   render() {

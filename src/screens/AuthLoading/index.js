@@ -9,6 +9,10 @@ class AuthLoading extends React.Component {
     this._bootstrapAsync();
   }
 
+  // async componentWillMount() {
+  //   await AsyncStorage.removeItem('userToken');
+  // }
+
   _bootstrapAsync = async () => {
     const userToken = await AsyncStorage.getItem('userToken');
     this.props.navigation.navigate(userToken ? 'Home' : 'Auth');

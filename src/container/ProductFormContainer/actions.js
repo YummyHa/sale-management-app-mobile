@@ -1,7 +1,7 @@
-export const addNewAttr = () => dispatch => {
+export const addNewAttr = (name) => dispatch => {
   dispatch({
     type: 'PRODUCT_ADD_ATTRIBUTE',
-    payload: { name: 'Attribute Name', value: '' }
+    payload: { name: name, value: '' }
   })
 }
 
@@ -16,5 +16,12 @@ export const updateAttr = ({ prop, value, index }) => dispatch => {
   dispatch({
     type: 'PRODUCT_UPDATE_ATTR',
     payload: { prop, value, index }
+  })
+}
+
+export const productUpdate = ({ prop, value }) => async dispatch => {
+  dispatch({
+    type: 'PRODUCT_UPDATE',
+    payload: { prop, value }
   })
 }

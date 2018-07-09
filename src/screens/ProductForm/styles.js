@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform } from "react-native";
 
 import Colors from '../../../constants/Colors';
 
@@ -34,11 +34,11 @@ const styles = StyleSheet.create({
     paddingRight: 5,
   },
   barcodeIconStyle: {
-    color: '#222'
+    color: Colors.tintColor
   },
   category: {
-    paddingTop: 5,
-    paddingBottom: 5,
+    paddingTop: Platform.OS === 'ios' ? 0 : 5,
+    paddingBottom: Platform.OS === 'ios' ? 0 : 5,
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { ActionSheet, Form, Item, Input, Text, Button, Icon, View, Picker, Toast } from 'native-base';
+import _ from 'lodash';
+import { ActionSheet, Form, Item, Input, Text, Button, Icon, View, Toast } from 'native-base';
 import { Field, reduxForm, formValueSelector } from 'redux-form';
 import { TouchableOpacity, Alert } from 'react-native'
 import { ImagePicker, Permissions } from 'expo'
@@ -19,7 +20,7 @@ const required = value => (value ? undefined : 'Required');
 class ProductFormRedux extends React.PureComponent {
   constructor (props) {
     super(props);
-    this.state = { clicked: null, selected: 'nan' }
+    this.state = { clicked: null }
   }
 
   renderInput({ input, label, type, meta: { touched, error, warning } }) {
@@ -102,7 +103,6 @@ class ProductFormRedux extends React.PureComponent {
     let pickerResult = await ImagePicker.launchCameraAsync({
       allowsEditing: true,
       aspect: [1, 1],
-      base64: true
     })
 
     this._handleImagePicked(pickerResult);
@@ -112,14 +112,13 @@ class ProductFormRedux extends React.PureComponent {
     let pickerResult = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
       aspect: [1, 1],
-      base64: true
     })
 
     this._handleImagePicked(pickerResult);
   }
 
   _handleImagePicked = async pickerResult => {
-    // update image field
+    this.props.productUpdate({ prop: 'image', value: pickerResult.uri })
   }
 
   onPickImageAction = () => {
@@ -134,31 +133,49 @@ class ProductFormRedux extends React.PureComponent {
     })
   }
 
-  onChangeCategory(value) {
-    this.setState({ selected: value })
-  }
+  onChangeCategory = async value => {
+    await this.props.productUpdate({ prop: 'cate_id', value: value })
 
-  onAddAttr() {
-    let check = false;
-    for (let item of this.props.attr) {
-      if (item.name === 'Attribute Name' || item.value === '') {
-        check = true;
-        break;
+    let selectedCate = _.find(this.props.categories.categories, { _id: value });
+    if (selectedCate) {
+      let newAttr = [];
+      for (let item of selectedCate.attributes) {
+        newAttr.push({ name: item, value: '' })
       }
-    }
 
-    if (check) {
-      Toast.show({
-        text: 'Attribute name and value can not be Empty',
-        position: 'bottom',
-        type: 'warning',
-        duration: 1500
-      });
+      this.props.productUpdate({ prop: 'attr', value: newAttr })
     } else {
-      this.props.addNewAttr();
-      console.log(this.props.attr)
+      this.props.productUpdate({ prop: 'attr', value: [] })
     }
   }
+
+  // onAddAttr() {
+  //   let check = false;
+  //   for (let item of this.props.attr) {
+  //     if (item.name === 'Attribute Name' || item.value === '') {
+  //       check = true;
+  //       break;
+  //     }
+  //   }
+
+  //   if (this.props.cate_id === null) {
+  //     Toast.show({
+  //       text: 'Xin hãy chọn loại sản phẩm trước!',
+  //       position: 'bottom',
+  //       type: 'warning',
+  //       duration: 1500
+  //     });
+  //   } else if (check) {
+  //     Toast.show({
+  //       text: 'Giá trị của thuộc tính không được để trống',
+  //       position: 'bottom',
+  //       type: 'warning',
+  //       duration: 1500
+  //     });
+  //   } else {
+  //     this.props.addNewAttr('Attribute Name')
+  //   }
+  // }
 
   render() {
     const form = (
@@ -196,13 +213,13 @@ class ProductFormRedux extends React.PureComponent {
       </Form>
     )
 
-    let attrRows = this.props.attr.map((r, i) => {
+    let attrRows = this.props.product_form.attr.map((r, i) => {
       return <Item key={r.name} style={styles.inputContainerStyle}>
         <TouchableOpacity style={{ width: 150 }} onPress={() => {}}>
           <Text>{r.name}</Text>
         </TouchableOpacity>
         <Input 
-          placeholder='undefined value'
+          placeholder='Giá trị'
           onChangeText={value => this.props.updateAttr({ prop: 'value', value: value, index: i })}
           value={r.value}
         />
@@ -224,17 +241,17 @@ class ProductFormRedux extends React.PureComponent {
 
     return (
       <ProductForm 
-        image={this.props.image}
+        image={this.props.product_form.image}
         onPickImageAction={() => this.onPickImageAction()}
         form={form}
         attrRows={attrRows}
-        cate_name={this.props.cate_name}
+        cate_name={this.props.product_form.cate_name}
         navigation={this.props.navigation}
-        selected={this.state.selected}
+        selected={this.props.product_form.cate_id}
         onChangeCategory={value => this.onChangeCategory(value)}
-        categories={this.props.categories}
+        categories={this.props.categories.categories}
         destroy={() => this.props.destroy()}
-        onAddAttr={() => this.onAddAttr()}
+        // onAddAttr={() => this.onAddAttr()}
       />
     );
   }
@@ -242,20 +259,22 @@ class ProductFormRedux extends React.PureComponent {
 
 const ProductFormContainerRedux = reduxForm({
   form: 'Product',
-  destroyOnUnmount: false
+  destroyOnUnmount: false,
+  enableReinitialize: true
 })(ProductFormRedux)
 
-const selector = formValueSelector('Product');
+// const selector = formValueSelector('Product');
 
 ProductFormContainer = connect(
-  state => {
-    const { serial, name, description, sell_price, origin_price, quantity } = 
-      selector(state, 'serial', 'name', 'description', 'sell_price', 'origin_price', 'quantity');
-    const { categories } = state.category;
-    const { attr } = state.product_form;
+  state => ({
+    // const { serial, name, description, sell_price, origin_price, quantity } = 
+    //   selector(state, 'serial', 'name', 'description', 'sell_price', 'origin_price', 'quantity');
+    initialValues: state.product_form.initFormValues,
+    categories: state.category,
+    product_form: state.product_form,
 
-    return { serial, name, description, sell_price, origin_price, quantity, categories, attr }
-  },
+    // return { serial, name, image, description, sell_price, origin_price, quantity, categories, attr, cate_id }
+  }),
   actions
 )(ProductFormContainerRedux);
 

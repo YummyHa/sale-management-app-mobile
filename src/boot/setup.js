@@ -2,6 +2,7 @@ import * as Expo from 'expo';
 import React, { Component } from 'react';
 import { StyleProvider, Spinner } from 'native-base';
 import { Provider } from 'react-redux';
+import firebase from 'firebase';
 
 import configureStore from './configureStore';
 import App from '../App';
@@ -19,6 +20,16 @@ class Setup extends Component {
   }
 
   componentWillMount() {
+    // Init Firebase
+    const config = {
+      apiKey: "AIzaSyDHyU_IR5R4_7D-cR38WwnDecbckhFxrIA",
+      authDomain: "salemanager2-5c6b3.firebaseapp.com",
+      databaseURL: "https://salemanager2-5c6b3.firebaseio.com",
+      projectId: "salemanager2-5c6b3",
+      storageBucket: "salemanager2-5c6b3.appspot.com",
+      messagingSenderId: "403778745500"
+    };
+    firebase.initializeApp(config);
     this.loadFonts();
   }
 

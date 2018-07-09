@@ -1,6 +1,6 @@
 import React from "react";
-import { View, Icon, Item, Text, Input, Button, Form, Picker, Header, Left, Title, Right } from 'native-base';
-import { TouchableOpacity, Image, Platform } from 'react-native'
+import { View, Icon, Item, Text, Input, Button, Form, Header, Left, Title, Right } from 'native-base';
+import { TouchableOpacity, Image, Platform, Picker } from 'react-native'
 
 import NavigationService from '../../NavigationService'
 import styles from './styles';
@@ -8,21 +8,21 @@ import styles from './styles';
 class ProductForm extends React.PureComponent {
   render() {
     makeList = (categories) => {
-      if (!categories) {
-        return <Picker.Item label='Empty' value='null' />
-      } else {
+      if (categories !== []) {
         d = categories.map((item, i) => (
           <Picker.Item label={item.name} value={item._id} key={i} />
-        ))
-        if (Platform.OS === 'android') {
-          d.unshift(<Picker.Item label='Select' />)
-        }
-        return d;
+        ));
+        d.unshift(<Picker.Item label='Pick a category' value={null} key='nan' />);
+      } else {
+        d = <Picker.Item label='No Category' value={null} key='nan' />
       }
+
+      return d
     }
 
     return (
       <View>
+        {/* Image Section */}
         <TouchableOpacity onPress={() => this.props.onPickImageAction()}>
           <View style={styles.imageContainerStyle}>
             {!this.props.image
@@ -32,43 +32,41 @@ class ProductForm extends React.PureComponent {
           </View>
         </TouchableOpacity>
         
+        {/* Form Section */}
         <View style={styles.borderContainer}>
           {this.props.form}
         </View>
 
         <View style={styles.divideView} />
 
+        {/* Category Section */}
         <View style={styles.category}>
           <Text style={styles.categoryLabel}>Category:</Text>
-          <Form>
-            <Picker
-              iosHeader='Pick Category'
-              mode='dropdown'
-              iosIcon={<Icon name='ios-arrow-down-outline' />}
-              style={{ width: 150, marginLeft: -15 }}
-              selectedValue={this.props.selected}
-              onValueChange={this.props.onChangeCategory}
-            >
-              <Picker.Item label='Pick a Category' value='nan' />
-              {makeList(this.props.categories)}            
-            </Picker>
-          </Form>
+          <Picker
+            mode='dropdown'
+            style={{ width: 150 }}
+            selectedValue={this.props.selected}
+            onValueChange={this.props.onChangeCategory}
+          >
+            {makeList(this.props.categories)}            
+          </Picker>
           <Button transparent onPress={() => NavigationService.navigate('Category')}>
-            <Icon name='add' style={styles.barcodeIconStyle} />
+            <Icon ios='ios-add-circle-outline' android='md-add-circle' style={styles.barcodeIconStyle} />
           </Button>
         </View>
 
         <View style={styles.divideView} />
 
+        {/* Attributes Section */}
         <Form style={styles.borderContainer}>
           {this.props.attrRows}
 
-          <Item style={styles.attributeStyles}>
+          {/* <Item style={styles.attributeStyles}>
             <Icon style={styles.addAttrIcon} ios='ios-add-circle-outline' android='md-add-circle'/>
             <TouchableOpacity onPress={() => this.props.onAddAttr()}>
               <Text style={styles.addAttrText}>Add attribute</Text>
             </TouchableOpacity>
-          </Item>
+          </Item> */}
         </Form>
 
         <View style={styles.divideView} />

@@ -8,12 +8,29 @@ export const fetchListProducts = () => async dispatch => {
       headers: { 'x-auth': token }
     });
 
-    if (!data.data.products) {
+    if (!data.data) {
       dispatch({ type: 'FETCH_PRODUCT_FAILED' })
     } else {
-      dispatch({ type: 'FETCH_PRODUCT_SUCCESS', payload: data.data.products })
+      dispatch({ type: 'FETCH_PRODUCT_SUCCESS', payload: data.data })
     }
   } catch (error) {
     dispatch({ type: 'FETCH_PRODUCT_FAILED' })
+  }
+}
+
+export const fetchListCategories = () => async dispatch => {
+  try {
+    let token = await AsyncStorage.getItem('userToken');
+    let data = await axios.get('http://localhost:3000/api/categories', {
+      headers: { 'x-auth': token }
+    });
+
+    if (!data.data) {
+      dispatch({ type: 'FETCH_CATEGORY_FAILED' })
+    } else {
+      dispatch({ type: 'FETCH_CATEGORY_SUCCESS', payload: data.data })
+    }
+  } catch (error) {
+    dispatch({ type: 'FETCH_CATEGORY_FAILED' })
   }
 }

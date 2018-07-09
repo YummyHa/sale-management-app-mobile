@@ -12,7 +12,7 @@ class Products extends React.PureComponent {
         thumbnail
         style={styles.listProduct}
       >
-        <Thumbnail square source={require("../../images/default-store-350x350.jpg")} />
+        <Thumbnail square source={item.image === '' ? require('../../images/default-store-350x350.jpg') : { uri: item.image }} />
         <Body>
           <Text>{item.name}</Text>
           <Text note>serial: {item.serial}</Text>

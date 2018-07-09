@@ -8,15 +8,13 @@ import styles from './styles'
 export default class CategoryScreen extends React.PureComponent {
   _renderItem = ({ item }) => {
     return (
-      <ListItem
-        icon
-        style={styles.listProduct}
-      >
+      <ListItem icon>
         <Left>
           <Icon name='arrow-forward' style={styles.itemIcon} />
         </Left>
         <Body>
           <Text>{item.name}</Text>
+          <Text note>{item.description}</Text>
         </Body>
         <Right>
           <Button transparent onPress={() => {}}>

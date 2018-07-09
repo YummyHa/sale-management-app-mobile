@@ -6,9 +6,6 @@ import CategoryScreen from '../../screens/Category';
 import * as actions from './actions';
 
 class CategoryContainer extends Component {
-  async componentDidMount() {
-    await this.props.fetchListCategories();
-  }
   render() {
     return (
       <CategoryScreen 
