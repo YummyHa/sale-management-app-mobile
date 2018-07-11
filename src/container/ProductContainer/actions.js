@@ -1,10 +1,13 @@
 import axios from 'axios';
-import { AsyncStorage } from 'react-native'
+import _ from 'lodash';
+import { AsyncStorage } from 'react-native';
+
+import URL from '../../../constants/serverUrl';
 
 export const fetchListProducts = () => async dispatch => {
   try {
     let token = await AsyncStorage.getItem('userToken');
-    let data = await axios.get('http://localhost:3000/api/products', {
+    let data = await axios.get(`${URL}/api/products`, {
       headers: { 'x-auth': token }
     });
 
@@ -21,7 +24,7 @@ export const fetchListProducts = () => async dispatch => {
 export const fetchListCategories = () => async dispatch => {
   try {
     let token = await AsyncStorage.getItem('userToken');
-    let data = await axios.get('http://localhost:3000/api/categories', {
+    let data = await axios.get(`${URL}/api/categories`, {
       headers: { 'x-auth': token }
     });
 
@@ -33,4 +36,18 @@ export const fetchListCategories = () => async dispatch => {
   } catch (error) {
     dispatch({ type: 'FETCH_CATEGORY_FAILED' })
   }
+}
+
+export const addProductToOrderingList = (item, list) => dispatch => {
+  let index = _.findIndex(list, p => p._id === item._id);
+  let data = {
+    _id: item._id,
+    quantity: 1,
+    name: item.name,
+    sell_price: item.sell_price[0].value,
+  };
+  index > -1 ? dispatch({ type: 'UPDATE_ORDER_QUANTITY_PLUS', payload: index }) 
+    : dispatch({ type: 'ADD_NEW_ORDERLIST_SUCCESS', payload: data });
+    dispatch({ type: 'UPDATE_TOTAL_ORDER_AMOUNT' });
+    dispatch({ type: 'MONEY_CHANGE_CHANGED' })
 }

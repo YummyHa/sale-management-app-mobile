@@ -32,8 +32,8 @@ class Bills extends Component {
         </Header>
 
         {/* Content */}
-        <Content>
-          <Text>This is bills screen</Text>
+        <Content padder>
+          <Text>Bills</Text>
         </Content>
       </Container>
     ); 

@@ -1,30 +1,42 @@
 import React from "react";
 import { Container, Content, Header, Left, Body, Right, Text, Title, Button, Icon, 
-  ListItem, Thumbnail, Spinner } from 'native-base';
-import { FlatList, StatusBar } from 'react-native';
+  ListItem, Thumbnail, Spinner, View, Badge, Fab } from 'native-base';
+import { FlatList, StatusBar, TouchableOpacity } from 'react-native';
 
 import styles from './styles';
 
 class Products extends React.PureComponent {
+  constructor() {
+    super();
+    this.state = {
+      active: 'true'
+    }
+  }
+
   _renderItem = ({ item }) => {
     return (
-      <ListItem
-        thumbnail
-        style={styles.listProduct}
-      >
-        <Thumbnail square source={item.image === '' ? require('../../images/default-store-350x350.jpg') : { uri: item.image }} />
-        <Body>
-          <Text>{item.name}</Text>
-          <Text note>serial: {item.serial}</Text>
-          <Text note>quantity: {item.quantity}</Text>
-          {item.attributes.map((p, i) => (
-            <Text note key={p._id}>{p.name}: {p.value}</Text>
-          ))}
-        </Body>
-        <Right>
-          <Text style={styles.priceStyle}>${item.sell_price[0].value}</Text>
-        </Right>
-      </ListItem>
+      <TouchableOpacity style={styles.itemWrapper}>
+        <ListItem
+          thumbnail
+          style={styles.listProduct}
+        >
+          <Thumbnail square source={item.image === '' ? require('../../images/default-store-350x350.jpg') : { uri: item.image }} />
+          <Body style={styles.noBottomBorder}>
+            <Text>{item.name}</Text>
+            <Text note>serial: {item.serial}</Text>
+            <Text note>quantity: {item.quantity}</Text>
+            {item.attributes.map((p, i) => (
+              <Text note key={p._id}>{p.name}: {p.value}</Text>
+            ))}
+          </Body>
+          <Right style={styles.noBottomBorder}>
+            <Text style={styles.priceStyle}>${item.sell_price[0].value}</Text>
+            <TouchableOpacity style={{ padding: 3, }} onPress={() => this.props.onProductPress(item)} >
+              <Icon ios='ios-cart-outline' android='md-cart' style={styles.cartIconStyle} />
+            </TouchableOpacity>
+          </Right>
+        </ListItem>
+      </TouchableOpacity>
     );
   }
 
@@ -46,9 +58,9 @@ class Products extends React.PureComponent {
           </Body>
 
           <Right>
-            <Button transparent onPress={() => this.props.navigation.navigate('AddProduct')}>
-              <Text style={styles.headerIconStyle}>Add</Text>
-            </Button>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('Cart')} style={{ flexDirection: 'row', alignContent: 'flex-end' }}>
+              <Text style={styles.headerIconStyle}>Giỏ({this.props.totalCart})</Text>
+            </TouchableOpacity>
           </Right>
         </Header>
 
@@ -61,6 +73,15 @@ class Products extends React.PureComponent {
             keyExtractor={item => item._id}
           />}
         </Content>
+            
+        <TouchableOpacity>
+          <Fab
+            onPress={() => this.props.navigation.navigate('AddProduct')}
+            style={styles.addProductFAB}
+          >
+            <Icon name='add' style={{ fontSize: 34 }} />
+          </Fab>
+        </TouchableOpacity>
       </Container>
     ); 
   }

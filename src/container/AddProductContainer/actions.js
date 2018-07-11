@@ -3,6 +3,8 @@ import firebase from 'firebase';
 import axios from 'axios';
 import Moment from 'moment';
 
+import URL from '../../../constants/serverUrl';
+
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -57,7 +59,7 @@ export const createProduct = ({serial, name, description, sell_price, origin_pri
 
     let product = await axios({
       method: 'POST',
-      url: 'http://localhost:3000/api/products',
+      url: `${URL}/api/products`,
       data: data,
       headers: {
         'x-auth': token, 

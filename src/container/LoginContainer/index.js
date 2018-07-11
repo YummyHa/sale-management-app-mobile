@@ -6,6 +6,7 @@ import { AsyncStorage } from 'react-native';
 import { connect } from 'react-redux';
 
 import Login from '../../screens/Login';
+import URL from '../../../constants/serverUrl';
 
 // validators
 const required = value => (value ? undefined : 'Required');
@@ -43,7 +44,7 @@ class LoginForm extends Component {
   checkLogin = async (email, password) => {
     try {
       const user = await axios.post(
-        'http://localhost:3000/api/users/login',
+        `${URL}/api/users/login`,
         { email, password }
       )
       if (!user) return false;

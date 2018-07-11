@@ -19,6 +19,7 @@ import AddProduct from './container/AddProductContainer';
 import BarCodeScanner from './container/BarcodeScannerContainer';
 import Category from './container/CategoryContainer';
 import Sidebar from './container/SidebarContainer';
+import Cart from './container/CartContainer';
 
 const ProductDrawer = createDrawerNavigator({
   ProductList: Products
@@ -32,6 +33,7 @@ const ProductStack = createStackNavigator({
   AddProduct: AddProduct,
   BarCodeScanner: BarCodeScanner,
   Category: Category,
+  Cart: Cart,
 }, {
   headerMode: 'none'
 })
