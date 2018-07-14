@@ -6,7 +6,7 @@ import LoadingSpinner from 'react-native-loading-spinner-overlay';
  
 import styles from './styles';
 
-class AddProduct extends React.PureComponent {
+class EditProduct extends React.PureComponent {
   render() {
     return (
       <Container style={styles.container}>
@@ -21,12 +21,12 @@ class AddProduct extends React.PureComponent {
           </Left>
 
           <Body>
-            <Title>Thêm sản phẩm</Title>
+            <Title>Sửa sản phẩm</Title>
           </Body>
 
           <Right>
-            <Button transparent onPress={() => this.props.onCreateProduct()}>
-              <Text style={styles.headerBackText}>Tạo</Text>
+            <Button transparent onPress={() => this.props.onSaveProduct()}>
+              <Text style={styles.headerBackText}>Lưu</Text>
             </Button>
           </Right>
         </Header>
@@ -40,4 +40,4 @@ class AddProduct extends React.PureComponent {
   }
 }
 
-export default AddProduct;
+export default EditProduct;

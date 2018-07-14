@@ -15,28 +15,29 @@ class Products extends React.PureComponent {
 
   _renderItem = ({ item }) => {
     return (
-      <TouchableOpacity style={styles.itemWrapper}>
+      <View style={styles.itemWrapper}>
         <ListItem
           thumbnail
           style={styles.listProduct}
+          onPress={() => this.props.onProductTapped(item._id)}
         >
           <Thumbnail square source={item.image === '' ? require('../../images/default-store-350x350.jpg') : { uri: item.image }} />
           <Body style={styles.noBottomBorder}>
             <Text>{item.name}</Text>
-            <Text note>serial: {item.serial}</Text>
-            <Text note>quantity: {item.quantity}</Text>
+            <Text note>mã vạch: {item.serial}</Text>
+            <Text note>số lượng: {item.quantity}</Text>
             {item.attributes.map((p, i) => (
-              <Text note key={p._id}>{p.name}: {p.value}</Text>
+              <Text note key={p._id}>{p.name}: {p.value === '' ? 'chưa có giá trị' : p.value}</Text>
             ))}
           </Body>
           <Right style={styles.noBottomBorder}>
-            <Text style={styles.priceStyle}>${item.sell_price[0].value}</Text>
+            <Text style={styles.priceStyle}>${item.sell_price}</Text>
             <TouchableOpacity style={{ padding: 3, }} onPress={() => this.props.onProductPress(item)} >
               <Icon ios='ios-cart-outline' android='md-cart' style={styles.cartIconStyle} />
             </TouchableOpacity>
           </Right>
         </ListItem>
-      </TouchableOpacity>
+      </View>
     );
   }
 
@@ -54,7 +55,7 @@ class Products extends React.PureComponent {
           </Left>
 
           <Body>
-            <Title>Products</Title>
+            <Title>Sản phẩm</Title>
           </Body>
 
           <Right>

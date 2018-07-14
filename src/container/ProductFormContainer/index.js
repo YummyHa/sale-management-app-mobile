@@ -12,7 +12,7 @@ import ProductForm from '../../screens/ProductForm';
 import * as actions from './actions';
 import styles from '../../screens/ProductForm/styles';
 
-const CAMERA_OPTIONS = ['Take Picture', 'Pick from gallery', 'Cancel'];
+const CAMERA_OPTIONS = ['Chụp hình', 'Chọn từ thư viện', 'Huỷ'];
 const CANCEL_INDEX = 2;
 
 const required = value => (value ? undefined : 'Required');
@@ -30,32 +30,32 @@ class ProductFormRedux extends React.PureComponent {
 
     switch (input.name) {
       case 'serial': 
-        labelName = 'Serial:';
-        placeHolder = '123456';
+        labelName = 'Mã vạch';
+        placeHolder = 'Nhập mã hoặc quét';
         keyboardType = 'default';
         break;
       case 'name': 
-        labelName = 'Name:';
-        placeHolder = 'Product A';
+        labelName = 'Tên';
+        placeHolder = 'Nhập tên sản phẩm';
         keyboardType = 'default';
         break;
       case 'description': 
-        labelName = 'Description:';
-        placeHolder = 'No description';
+        labelName = 'Mô tả';
+        placeHolder = 'Mô tả sản phẩm';
         keyboardType = 'default';
         break;
       case 'origin_price': 
-        labelName = 'Original Price:';
+        labelName = 'Giá gốc';
         placeHolder = '0';
         keyboardType = 'numeric';
         break;
       case 'sell_price': 
-        labelName = 'Sell Price:';
+        labelName = 'Giá bán';
         placeHolder = '0';
         keyboardType = 'numeric';
         break;
       case 'quantity': 
-        labelName = 'Quantity:';
+        labelName = 'Số lượng';
         placeHolder = '0';
         keyboardType = 'numeric';
         break;
@@ -88,13 +88,13 @@ class ProductFormRedux extends React.PureComponent {
     const cameraRoll = await Permissions.askAsync(Permissions.CAMERA_ROLL);
     camera.status === 'granted' && cameraRoll.status === 'granted'
     ? this._pickActionComplete() 
-    : alert('Need camera permission to use this function!')
+    : alert('Bạn cần cấp quyền truy cập máy ảnh để sử dụng tính năng này!')
   }
 
   _pickActionComplete() {
-    if (this.state.clicked === 'Take Picture') {
+    if (this.state.clicked === 'Chụp hình') {
       this._takePhoto();
-    } else if (this.state.clicked === 'Pick from gallery') {
+    } else if (this.state.clicked === 'Chọn từ thư viện') {
       this._pickImage();
     }
   }

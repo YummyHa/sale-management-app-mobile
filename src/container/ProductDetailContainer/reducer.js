@@ -1,12 +1,12 @@
 const INITIAL_STATE = {
-  orders: [],
-};
+  product: {}
+}
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case 'FETCH_ORDER_SUCCESS':
-      return { ...state, orders: action.payload };
+    case 'FETCH_PRODUCT_IN_DETAIL': 
+      return { ...state, product: action.payload }
     default:
       return state;
   }
-};
+}

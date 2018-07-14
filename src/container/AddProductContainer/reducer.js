@@ -10,6 +10,8 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, isCreatingProduct: false }
     case 'CREATE_PRODUCT_FAILED': 
       return { ...state, isCreatingProduct: false }
+    case 'SAVE_PRODUCT_FINISHED':
+      return { ...state, isCreatingProduct: false }
     default: 
       return state;
   }

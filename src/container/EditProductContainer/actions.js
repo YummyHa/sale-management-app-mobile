@@ -9,6 +9,10 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+export const finishEditProduct = () => async dispatch => {
+  dispatch({ type: 'EDIT_PRODUCT_FINISHED' })
+}
+
 async function uploadImageAsync(uri, name) {
   const response = await fetch(uri);
   const blob = await response.blob();
@@ -19,7 +23,7 @@ async function uploadImageAsync(uri, name) {
   return snapshot.ref.getDownloadURL();
 }
 
-export const createProduct = ({serial, name, description, sell_price, origin_price, quantity, attr, image, cate_id}, callback, failcb) => async dispatch => {
+export const editProduct = ({id, serial, name, description, sell_price, origin_price, quantity, attr, image, cate_id}, callback, failcb) => async dispatch => {
   try {
     dispatch({ type: 'CREATE_PRODUCT_START' })
     let token = await AsyncStorage.getItem('userToken');
@@ -32,6 +36,7 @@ export const createProduct = ({serial, name, description, sell_price, origin_pri
     }
 
     const data = {
+      id,
       serial,
       name,
       description,
@@ -45,28 +50,16 @@ export const createProduct = ({serial, name, description, sell_price, origin_pri
 
     await sleep(2000);
 
-    // const config = {
-    //   method: 'POST',
-    //   headers: { 
-    //     'Accept': 'application/json',
-    //     'Content-Type': 'multipart/form-data', 
-    //     'x-auth': token, 
-    //   },
-    //   body: data,
-    // }
-
-    // let product = await fetch('http://localhost:3000/api/products', config);
-
     let product = await axios({
-      method: 'POST',
-      url: `${URL}/api/products`,
+      method: 'PATCH',
+      url: `${URL}/api/product`,
       data: data,
       headers: {
         'x-auth': token, 
       }
     })
 
-    dispatch({ type: 'CREATE_PRODUCT_SUCCESS' });
+    dispatch({ type: 'SAVE_PRODUCT_FINISHED' })
     callback();
   } catch (error) {
     failcb();

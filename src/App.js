@@ -3,7 +3,7 @@ import { createStackNavigator, createBottomTabNavigator, createSwitchNavigator,
   createDrawerNavigator } from 'react-navigation'
 import { Root } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
-import { Platform } from 'react-native';
+import { Platform, Text } from 'react-native';
 
 import Colors from '../constants/Colors';
 import NavigationService from './NavigationService';
@@ -20,6 +20,9 @@ import BarCodeScanner from './container/BarcodeScannerContainer';
 import Category from './container/CategoryContainer';
 import Sidebar from './container/SidebarContainer';
 import Cart from './container/CartContainer';
+import ProductDetail from './container/ProductDetailContainer';
+import EditProduct from './container/EditProductContainer';
+import Welcome from './container/WelcomeContainer';
 
 const ProductDrawer = createDrawerNavigator({
   ProductList: Products
@@ -31,9 +34,11 @@ const ProductDrawer = createDrawerNavigator({
 const ProductStack = createStackNavigator({
   ProductHome: ProductDrawer,
   AddProduct: AddProduct,
+  EditProduct: EditProduct,
   BarCodeScanner: BarCodeScanner,
   Category: Category,
   Cart: Cart,
+  ProductDetail: ProductDetail,
 }, {
   headerMode: 'none'
 })
@@ -85,6 +90,30 @@ const HomeStack = createBottomTabNavigator({
         />
       );
     },
+    tabBarLabel: ({ focused }) => {
+      const { routeName } = navigation.state;
+      let label;
+      switch (routeName) {
+        case 'Products': 
+          label = 'Trang chủ';
+          break;
+        case 'Bills': 
+          label = 'Hoá đơn';
+          break;
+        case 'Customers': 
+          label = 'Khách';
+          break;
+        case 'Summary': 
+          label = 'Thống kê';
+          break;
+        case 'Settings': 
+          label = 'Cài đặt';
+          break;
+      }
+      return (
+        <Text style={{ color: focused ? Colors.tabIconSelected : Colors.tabIconDefault, fontSize: 11 }}>{label}</Text>
+      );
+    },
   }),
   animationEnabled: true,
   swipeEnabled: false,
@@ -95,7 +124,8 @@ const HomeStack = createBottomTabNavigator({
 })
 
 const AuthStack = createStackNavigator({
-  Login: Login
+  Login: Login,
+  Welcome: Welcome
 }, {
   headerMode: 'none'
 })

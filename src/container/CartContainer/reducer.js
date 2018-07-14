@@ -4,7 +4,7 @@ import update from 'immutability-helper';
 const INITIAL_STATE = {
   orderingList: [],
   orderingTotalItems: 0,
-  customer: {},
+  customer: null,
   total: 0,
   discount: 0,
   paidmoney: 0,

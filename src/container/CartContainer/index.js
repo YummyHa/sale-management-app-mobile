@@ -4,7 +4,10 @@ import _ from 'lodash';
 import { Toast } from 'native-base';
 
 import Cart from '../../screens/Cart';
-import * as actions from './actions';
+import { updateOrderQuantity, updateOrderQuantityByButton, removeItemInOrderingList, discountChange,
+  updateOrginTotal, customerPaidChanged, afterChangeTotalAgain, onSelectCustomer,
+  addNewOrder } from './actions';
+import { fetchListOrders } from '../ProductContainer/actions';
 
 class CartContainer extends Component {
   state = {
@@ -57,9 +60,9 @@ class CartContainer extends Component {
     }
   }
   
-  onAddNewOrder() {
+  async onAddNewOrder() {
     const { customer, total, orderingList, paidmoney, discount } = this.props;
-    this.props.addNewOrder({
+    await this.props.addNewOrder({
       customer,
       orderingList,
       total,
@@ -68,6 +71,7 @@ class CartContainer extends Component {
     }, () => this.props.navigation.goBack(),
       () => this.showToast('Thất bại'),
       () => this.toggleModal());
+    this.props.fetchListOrders();
   }
 
   showToast = (message) => {
@@ -109,4 +113,10 @@ const mapStateToProps = (state) => {
   return { orderingList, orderingTotalItems, customer, total, discount, paidmoney, changeback }
 }
 
-export default connect(mapStateToProps, actions)(CartContainer);
+const mapDispatchToProps = {
+  updateOrderQuantity, updateOrderQuantityByButton, removeItemInOrderingList, discountChange,
+  updateOrginTotal, customerPaidChanged, afterChangeTotalAgain, onSelectCustomer,
+  addNewOrder, fetchListOrders
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CartContainer);

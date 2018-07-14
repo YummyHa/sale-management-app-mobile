@@ -61,7 +61,9 @@ export const addNewOrder = ({ customer, orderingList, total, paidmoney, discount
     _.forEach(orderingList, (value) => {
       let product = {
         _product: value._id,
-        qty: value.quantity
+        qty: value.quantity,
+        price: value.sell_price,
+        price_origin: value.origin_price,
       }
       products.push(product);
     });
@@ -74,8 +76,6 @@ export const addNewOrder = ({ customer, orderingList, total, paidmoney, discount
       saleOff: discount,
       status: paidmoney === 0 ? 'Chưa thanh toán' : paidmoney >= total ? 'Đã thanh toán' : 'Còn nợ'
     }
-
-    console.log(data);
 
     var order = await axios({
       method: 'POST',

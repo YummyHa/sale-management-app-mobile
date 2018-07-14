@@ -12,5 +12,6 @@ export default {
   noticeText: '#fff',
   background: '#fff',
   secondTintColor: '#f8b595',
-  textColor: '#7f8c8d'
+  textColor: '#7f8c8d',
+  thirdTintColor: '#17bebb',
 };

@@ -7,8 +7,15 @@ import categoryReducer from '../container/CategoryContainer/reducer';
 import productForm from '../container/ProductFormContainer/reducer';
 import Cart from '../container/CartContainer/reducer';
 import Customer from '../container/CustomerContainer/reducer';
+import ProductDetail from '../container/ProductDetailContainer/reducer';
+import EditProdcut from '../container/EditProductContainer/reducer';
+import Summary from '../container/SummaryContainer/reducer';
+import Bill from '../container/BillContainer/reducer';
+import Sidebar from '../container/SidebarContainer/reducer';
+import Auth from '../container/LoginContainer/reducer';
 
 export default combineReducers({
+  auth: Auth,
   form: formReducer,
   product_list: productsReducer,
   add_product: addProductReducer,
@@ -16,4 +23,9 @@ export default combineReducers({
   category: categoryReducer,
   cart: Cart,
   customer: Customer,
+  product_detail: ProductDetail,
+  edit_product: EditProdcut,
+  summary: Summary,
+  bill: Bill,
+  sidebar: Sidebar
 });

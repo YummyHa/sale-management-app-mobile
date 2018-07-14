@@ -30,6 +30,23 @@ export default (state = INITIAL_STATE, action) => {
           }
         }
       })
+    case 'PARSE_INIT_FORM_VALUES':
+      return { ...state, initFormValues: action.payload }
+    case 'PARSE_IN_MORE_PRODUCT_VALUES':
+      return { ...state, image: action.payload.image, cate_id: action.payload.cate_id, attr: action.payload.attributes }
+    case 'EDIT_PRODUCT_FINISHED':
+      return { ...state, 
+        image: null,
+        attr: [],
+        cate_id: null,
+        initFormValues: {
+          serial: undefined, 
+          name: undefined, 
+          description: undefined, 
+          sell_price: undefined, 
+          origin_price: undefined, 
+          quantity: undefined
+        } };
     default: 
       return state;
   }

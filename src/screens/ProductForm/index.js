@@ -12,9 +12,9 @@ class ProductForm extends React.PureComponent {
         d = categories.map((item, i) => (
           <Picker.Item label={item.name} value={item._id} key={i} />
         ));
-        d.unshift(<Picker.Item label='Pick a category' value={null} key='nan' />);
+        d.unshift(<Picker.Item label='Chọn loại sản phẩm' value={null} key='nan' />);
       } else {
-        d = <Picker.Item label='No Category' value={null} key='nan' />
+        d = <Picker.Item label='Chưa có loại sản phẩm' value={null} key='nan' />
       }
 
       return d
@@ -41,7 +41,7 @@ class ProductForm extends React.PureComponent {
 
         {/* Category Section */}
         <View style={styles.category}>
-          <Text style={styles.categoryLabel}>Category:</Text>
+          <Text style={styles.categoryLabel}>Loại sản phẩm:</Text>
           <Picker
             mode='dropdown'
             style={{ width: 150 }}
