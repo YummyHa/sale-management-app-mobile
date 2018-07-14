@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import { connect } from 'react-redux';
+import { Toast } from 'native-base';
 
 import Products from '../../screens/Products';
 
@@ -13,9 +14,22 @@ class ProductContainer extends Component {
     await this.props.fetchListOrders();
   }
 
+  showToast = (message) => {
+    Toast.show({
+      text: message,
+      position: 'bottom',
+      duration: 1500
+    });
+  }
+
   addProductToOrder = async (item) => {
-    await this.props.addProductToOrderingList(item, this.props.orderingList);
-    console.log(this.props.orderingTotalItems)
+    if (item.quantity === 0) {
+      this.showToast('Sản phẩm đã hết hàng');
+    } else {
+      var list = this.props.orderingList;
+      await this.props.addProductToOrderingList({item, list}, 
+        () => this.showToast('Không thể thêm sản phẩm này nhiều hơn!'));
+    }
   }
 
   onProductTapped(id) {

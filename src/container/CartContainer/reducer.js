@@ -21,7 +21,8 @@ export default (state = INITIAL_STATE, action) => {
       return update(state, {
         orderingList: {
           [action.payload]: {
-            ['quantity']: { $set: state.orderingList[action.payload].quantity + 1 }
+            ['quantity']: { $set: state.orderingList[action.payload].quantity + 1 },
+            ['origin_qty']: { $set: state.orderingList[action.payload].origin_qty - 1 }
           }
         }
       });
@@ -29,7 +30,8 @@ export default (state = INITIAL_STATE, action) => {
       return update(state, {
         orderingList: {
           [action.payload]: {
-            ['quantity']: { $set: state.orderingList[action.payload].quantity - 1 }
+            ['quantity']: { $set: state.orderingList[action.payload].quantity - 1 },
+            ['origin_qty']: { $set: state.orderingList[action.payload].origin_qty + 1 }
           }
         }
       });
@@ -37,7 +39,8 @@ export default (state = INITIAL_STATE, action) => {
       return update(state, {
         orderingList: {
           [action.payload.index]: {
-            ['quantity']: { $set: action.payload.value }
+            ['quantity']: { $set: action.payload.value },
+            ['origin_qty']: { $set: state.orderingList[action.payload.index].origin_qty - action.payload.value }
           }
         }
       })

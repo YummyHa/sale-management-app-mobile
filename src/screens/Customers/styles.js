@@ -35,6 +35,9 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     width: 100
+  },
+  listStyle: {
+    backgroundColor: '#fff'
   }
 });
 

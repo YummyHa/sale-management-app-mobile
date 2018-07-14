@@ -102,7 +102,7 @@ class Cart extends Component {
             value={item.quantity.toString()}
           />
 
-          <Button transparent onPress={() => this.props.onPlusQty(index)}>
+          <Button transparent onPress={() => this.props.onPlusQty(index, item.quantity)}>
             <Icon ios='ios-arrow-dropright-outline' android='md-arrow-dropright-circle' style={{ color: Colors.tintColor }} />
           </Button>
         </View>

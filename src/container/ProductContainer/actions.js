@@ -51,19 +51,30 @@ export const fetchListOrders = () => async dispatch => {
   }
 }
 
-export const addProductToOrderingList = (item, list) => dispatch => {
+export const addProductToOrderingList = ({item, list}, cb) => dispatch => {
   let index = _.findIndex(list, p => p._id === item._id);
   let data = {
     _id: item._id,
     quantity: 1,
+    origin_qty: item.quantity - 1,
+    real_qty: item.quantity,
     name: item.name,
     sell_price: item.sell_price,
     origin_price: item.origin_price,
   };
-  index > -1 ? dispatch({ type: 'UPDATE_ORDER_QUANTITY_PLUS', payload: index }) 
-    : dispatch({ type: 'ADD_NEW_ORDERLIST_SUCCESS', payload: data });
-    dispatch({ type: 'UPDATE_TOTAL_ORDER_AMOUNT' });
-    dispatch({ type: 'MONEY_CHANGE_CHANGED' })
+
+  if (index > -1) {
+    if (list[index].origin_qty <= 0) {
+      cb();
+    } else {
+      dispatch({ type: 'UPDATE_ORDER_QUANTITY_PLUS', payload: index }) 
+    }
+  } else {
+    dispatch({ type: 'ADD_NEW_ORDERLIST_SUCCESS', payload: data })
+  }
+
+  dispatch({ type: 'UPDATE_TOTAL_ORDER_AMOUNT' });
+  dispatch({ type: 'MONEY_CHANGE_CHANGED' })
 }
 
 export const gotoProductDetail = (product, callback) => async dispatch => {

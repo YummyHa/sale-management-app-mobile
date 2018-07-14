@@ -7,7 +7,7 @@ import Cart from '../../screens/Cart';
 import { updateOrderQuantity, updateOrderQuantityByButton, removeItemInOrderingList, discountChange,
   updateOrginTotal, customerPaidChanged, afterChangeTotalAgain, onSelectCustomer,
   addNewOrder } from './actions';
-import { fetchListOrders } from '../ProductContainer/actions';
+import { fetchListOrders, fetchListProducts } from '../ProductContainer/actions';
 
 class CartContainer extends Component {
   state = {
@@ -22,7 +22,20 @@ class CartContainer extends Component {
   onUpdateOrderQuantity(index, value) {
     let val = parseInt(value);
     if (_.isNaN(val)) val = 0;
-    this.props.updateOrderQuantity(val, index);
+    if (value > this.props.orderingList[index].real_qty) {
+      this.showToast(`số lượng vượt quá mức số lượng sản phẩm hiện có, tối đa ${this.props.orderingList[index].real_qty}`);
+      this.props.updateOrderQuantity(this.props.orderingList[index].real_qty, index);
+    } else {
+      this.props.updateOrderQuantity(val, index);
+    }
+  }
+
+  onPlusQty(index, quantity) {
+    if (this.props.orderingList[index].origin_qty === 0) {
+      this.showToast('Không thể thêm sản phẩm này nhiều hơn');
+    } else {
+      this.props.updateOrderQuantityByButton('plus', index);  
+    }
   }
 
   onMinusQuantity(index, quantity) {
@@ -71,13 +84,14 @@ class CartContainer extends Component {
     }, () => this.props.navigation.goBack(),
       () => this.showToast('Thất bại'),
       () => this.toggleModal());
-    this.props.fetchListOrders();
+    await this.props.fetchListOrders();
+    await this.props.fetchListProducts();
   }
 
   showToast = (message) => {
     Toast.show({
       text: message,
-      position: 'bottom',
+      position: 'top',
       duration: 1500
     });
   }
@@ -93,7 +107,7 @@ class CartContainer extends Component {
       onUpdateQty={(index, value) => this.onUpdateOrderQuantity(index, value)}
       removeItemList={list => this.props.removeItemInOrderingList(list)}
       onMinusQty={(index, quantity) => this.onMinusQuantity(index, quantity)}
-      onPlusQty={index => this.props.updateOrderQuantityByButton('plus', index)}
+      onPlusQty={(index, quantity) => this.onPlusQty(index, quantity)}
       onDiscountChanged={value => this.onDiscountChanged(value)}
       onPaidChanged={value => this.onPaidChanged(value)}
       discount={this.props.discount}
@@ -116,7 +130,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   updateOrderQuantity, updateOrderQuantityByButton, removeItemInOrderingList, discountChange,
   updateOrginTotal, customerPaidChanged, afterChangeTotalAgain, onSelectCustomer,
-  addNewOrder, fetchListOrders
+  addNewOrder, fetchListOrders, fetchListProducts
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CartContainer);

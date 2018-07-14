@@ -23,6 +23,8 @@ import Cart from './container/CartContainer';
 import ProductDetail from './container/ProductDetailContainer';
 import EditProduct from './container/EditProductContainer';
 import Welcome from './container/WelcomeContainer';
+import Contact from './container/ContactContainer';
+import Receipt from './container/ReceiptContainer';
 
 const ProductDrawer = createDrawerNavigator({
   ProductList: Products
@@ -39,6 +41,9 @@ const ProductStack = createStackNavigator({
   Category: Category,
   Cart: Cart,
   ProductDetail: ProductDetail,
+  Customers: Customers,
+  Settings: Settings,
+  Receipt: Receipt,
 }, {
   headerMode: 'none'
 })
@@ -46,9 +51,8 @@ const ProductStack = createStackNavigator({
 const HomeStack = createBottomTabNavigator({
   Products: ProductStack,
   Bills: Bills,
-  Customers: Customers,
   Summary: Summary,
-  Settings: Settings,
+  Contact: Contact,
 }, {
   navigationOptions: ({ navigation }) => ({
     tabBarIcon: ({ focused }) => {
@@ -65,20 +69,15 @@ const HomeStack = createBottomTabNavigator({
             ? `ios-paper${focused ? '' : '-outline'}`
             : `md-paper`;
           break;
-        case 'Customers': 
-          iconName = Platform.OS === 'ios'
-            ? `ios-contacts${focused ? '' : '-outline'}`
-            : `md-contacts`;
-          break;
         case 'Summary': 
           iconName = Platform.OS === 'ios'
             ? `ios-stats${focused ? '' : '-outline'}`
             : `md-stats`;
           break;
-        case 'Settings': 
+        case 'Contact': 
           iconName = Platform.OS === 'ios'
-            ? `ios-construct${focused ? '' : '-outline'}`
-            : `md-construct`;
+            ? `ios-chatbubbles${focused ? '' : '-outline'}`
+            : `md-chatbubbles`;
           break;
       }
       return (
@@ -100,14 +99,11 @@ const HomeStack = createBottomTabNavigator({
         case 'Bills': 
           label = 'Hoá đơn';
           break;
-        case 'Customers': 
-          label = 'Khách';
-          break;
         case 'Summary': 
           label = 'Thống kê';
           break;
-        case 'Settings': 
-          label = 'Cài đặt';
+        case 'Contact': 
+          label = 'Hỗ trợ';
           break;
       }
       return (

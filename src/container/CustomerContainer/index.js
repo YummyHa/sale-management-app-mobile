@@ -9,7 +9,7 @@ import * as actions from './actions';
 class CustomerContainer extends Component {
   state = {
     isAddModalOpen: false,
-    isEditModalOpen: false,
+    isEditModalOpen: false, 
   }
 
   async componentWillMount() {

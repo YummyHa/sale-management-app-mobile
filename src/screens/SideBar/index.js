@@ -16,7 +16,7 @@ const routes = [
     caption: 'Thêm sản phẩm',
   },
   {
-    route: 'ProductList',
+    route: 'Receipt',
     caption: 'Nhập hàng',
   },
   {

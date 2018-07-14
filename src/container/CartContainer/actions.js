@@ -84,6 +84,22 @@ export const addNewOrder = ({ customer, orderingList, total, paidmoney, discount
       headers: { 'x-auth': token }
     });
 
+    // update product
+    _.forEach(orderingList, async (value) => {
+      let prod = {
+        id: value._id,
+        quantity: value.real_qty - value.quantity,
+      }
+      await axios({
+        method: 'PATCH',
+        url: `${URL}/api/product`,
+        data: prod,
+        headers: {
+          'x-auth': token, 
+        }
+      })
+    });
+
     dispatch({ type: 'ADD_ORDER_SUCCESS' });
     callback();
     cb1();
