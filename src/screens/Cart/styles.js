@@ -1,13 +1,13 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform } from "react-native";
 
 import Colors from '../../../constants/Colors';
 
 const styles = StyleSheet.create({
   headerIconStyle: {
-    color: Colors.tintColor
+    color: Platform.OS === 'ios' ? Colors.tintColor : '#fff'
   },
   headerBackText: {
-    color: Colors.tintColor
+    color: Platform.OS === 'ios' ? Colors.tintColor : '#fff'
   },
   container: {
     flex: 1,

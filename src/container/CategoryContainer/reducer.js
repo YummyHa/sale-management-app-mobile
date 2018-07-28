@@ -32,6 +32,12 @@ export default (state = INITIAL_STATE, action) => {
       };
     case 'CATEGORY_SAVE_FAILED':
       return { ...state, isSavingCate: false }
+    case 'PARSE_VALUE_TO_EDIT_CATEGORY':
+      return { ...state,
+        cateName: action.payload.name,
+        cateDesc: action.payload.description,
+        attr: action.payload.attributes,
+      }
     default:
       return state;
   }

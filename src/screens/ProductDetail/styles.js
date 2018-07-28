@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform } from "react-native";
 import Colors from "../../../constants/Colors";
 
 const styles = StyleSheet.create({
@@ -29,6 +29,9 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  headerIconStyle: {
+    color: Platform.OS === 'ios' ? Colors.tintColor : '#fff'
   },
 });
 

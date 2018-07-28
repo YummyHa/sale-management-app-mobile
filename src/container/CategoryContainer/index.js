@@ -2,20 +2,27 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Modal } from 'react-native';
 import { Toast } from 'native-base';
+import _ from 'lodash';
 
 import CategoryScreen from '../../screens/Category';
 
-import { categoryUpdate, updateAttrList, addNewCategory } from './actions';
+import { categoryUpdate, updateAttrList, addNewCategory, parseValueToEdit } from './actions';
 import { fetchListCategories } from '../ProductContainer/actions';
 
 class CategoryContainer extends Component {
   state = {
-    cateModalVisible: false
+    cateModalVisible: false,
+    editCateModalVisible: false
   }
 
   toggleAddModal() {
     this.state.cateModalVisible ? this.setState({ cateModalVisible: false }) 
       : this.setState({ cateModalVisible: true })
+  }
+
+  toggleEditModal() {
+    this.state.editCateModalVisible ? this.setState({ editCateModalVisible: false }) 
+      : this.setState({ editCateModalVisible: true })
   }
 
   async attributeUpdate(text) {
@@ -50,6 +57,18 @@ class CategoryContainer extends Component {
     }
   }
 
+  async onEditCategory() {
+
+  }
+
+  async onOpenEditCategoryPage(id) {
+    var category = _.find(this.props.categories, { '_id': id });
+
+    this.props.parseValueToEdit(category);
+
+    this.toggleEditModal();
+  }
+
   showToast = (message) => {
     Toast.show({
       text: message,
@@ -65,7 +84,9 @@ class CategoryContainer extends Component {
         isFetching={this.props.isFetchingCategories}
         navigation={this.props.navigation}
         cateModalVisible={this.state.cateModalVisible}
+        editCateModalVisible={this.state.editCateModalVisible}
         toggleAddModal={() => this.toggleAddModal()}
+        toggleEditModal={() => this.toggleEditModal()}
         categoryUpdate={({prop, value}) => this.props.categoryUpdate({prop, value})}
         cateName={this.props.cateName}
         cateDesc={this.props.cateDesc}
@@ -75,6 +96,8 @@ class CategoryContainer extends Component {
         onAddNewCategory={() => this.onAddNewCategory()}
         isSavingCate={this.props.isSavingCate}
         check={this.props.checkMessage}
+        onOpenEditCategoryPage={(id) => this.onOpenEditCategoryPage(id)}
+        onEditCategory={() => this.onEditCategory()}
       />
     )
   }
@@ -90,7 +113,8 @@ const mapDispatchToProps = {
   fetchListCategories,
   updateAttrList,
   categoryUpdate,
-  addNewCategory
+  addNewCategory,
+  parseValueToEdit
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CategoryContainer);

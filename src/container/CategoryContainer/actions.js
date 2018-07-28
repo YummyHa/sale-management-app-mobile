@@ -43,3 +43,7 @@ export const addNewCategory = ({ name, desc, attribute }, cb, failcb) => async d
     failcb();
   }
 }
+
+export const parseValueToEdit = (category) => async dispatch => {
+  dispatch({ type: 'PARSE_VALUE_TO_EDIT_CATEGORY', payload: category });
+} 

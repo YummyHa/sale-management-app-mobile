@@ -9,9 +9,21 @@ import * as actions from './actions';
 
 class ProductContainer extends Component {
   async componentDidMount() {
+    await this.props.fetchUser();
     await this.props.fetchListProducts();
     await this.props.fetchListCategories();
     await this.props.fetchListOrders();
+    await this.props.fetchListReceipts();
+    var { _id, _admin } = this.props.user;
+    var result = this.sortString(_id, _admin)
+    console.log(result);
+    this.props.fetchMessages(result);
+  }
+
+  sortString(a, b) {
+    let check = a.localeCompare(b);
+    let result = check < 0 ? a+'-'+b : b+'-'+a;
+    return result; 
   }
 
   showToast = (message) => {
@@ -52,8 +64,9 @@ class ProductContainer extends Component {
 const mapStateToProps = (state) => {
   const { products, isFetchingProducts } = state.product_list;
   const { orderingList, orderingTotalItems } = state.cart;
+  const { user } = state.sidebar;
 
-  return { products, isFetchingProducts, orderingList, orderingTotalItems }
+  return { products, isFetchingProducts, orderingList, orderingTotalItems, user }
 }
 
 export default connect(mapStateToProps, actions)(ProductContainer);

@@ -1,12 +1,27 @@
 import React from 'react'
 import { Header, Left, Body, Right, Container, Content, Text, Button, Icon, Title,
   ListItem, Spinner, View, Form, Item, Input } from 'native-base'
-import { Platform, FlatList, TouchableOpacity, Modal } from 'react-native'
+import { Platform, TouchableOpacity, Modal, ScrollView } from 'react-native'
+import { createFilter } from 'react-native-search-filter';
+import { SearchBar } from 'react-native-elements';
 
 import styles from './styles'
 import Colors from '../../../constants/Colors';
 
+const KEYS_TO_FILTER = ['name', 'description']
+
 export default class CategoryScreen extends React.PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      searchTerm: ''
+    }
+  }
+
+  searchUpdated(term) {
+    this.setState({ searchTerm: term })
+  }
+
   renderCategoryForm() {
     const { inputTextStyle, inputContainerStyle, textStyle, formStyle } = styles;
     return (
@@ -64,8 +79,8 @@ export default class CategoryScreen extends React.PureComponent {
         <Header>
           <Left>
             <Button transparent onPress={() => this.props.toggleAddModal()} >
-              <Icon active name="close" style={{ color: Colors.tintColor }} />
-              <Text style={{color: Colors.tintColor}}>Huỷ</Text>
+            <Icon name="close" style={styles.headerIconStyle} />
+              {Platform.OS === 'ios' ? <Text style={styles.headerText}>Huỷ</Text> : null}
             </Button>
           </Left>
 
@@ -103,6 +118,53 @@ export default class CategoryScreen extends React.PureComponent {
     );
   }
 
+  renderEditCateModal() {
+    const { containerStyle } = styles;
+
+    return (
+      <Container style={containerStyle}>
+        <Header>
+          <Left>
+            <Button transparent onPress={() => this.props.toggleEditModal()} >
+            <Icon name="close" style={styles.headerIconStyle} />
+              {Platform.OS === 'ios' ? <Text style={styles.headerText}>Huỷ</Text> : null}
+            </Button>
+          </Left>
+
+          <Body>
+            <Title>Sửa loại</Title>
+          </Body>
+
+          <Right />
+        </Header>
+
+        <Content>
+          <View style={{ justifyContent: 'center', alignItems: 'center', margin: 10 }}>
+            <Text style={{ color: Colors.secondTintColor }}>{this.props.check}</Text>
+          </View>
+          {this.renderCategoryForm()}
+
+          {this.props.isSavingCate ? <Button
+            info
+            full
+            rounded
+            style={{ marginTop: 20, marginLeft: 10, marginRight: 10, backgroundColor: Colors.tintColor }}
+          >
+            <Spinner color='#fff' />
+          </Button> 
+          : <Button
+              full
+              rounded
+              style={{ marginTop: 20, marginLeft: 10, marginRight: 10, backgroundColor: Colors.tintColor }}
+              onPress={() => this.props.onEditCategory()}
+            >
+              <Text style={{ color: '#fff' }}>Lưu</Text>
+            </Button>}
+        </Content>
+      </Container>
+    );
+  }
+
   _renderItem = ({ item }) => {
     return (
       <View>
@@ -118,6 +180,9 @@ export default class CategoryScreen extends React.PureComponent {
             </View>
           </Body>
           <Right>
+            <TouchableOpacity style={{ padding: 3, marginBottom: 7 }} onPress={() => this.props.onOpenEditCategoryPage(item._id)}>
+              <Text style={{ color: Colors.tintColor }}>Sửa</Text>
+            </TouchableOpacity>
             <TouchableOpacity style={{ padding: 3 }} onPress={() => {}}>
               <Text style={{ color: Colors.secondTintColor }}>Xoá</Text>
             </TouchableOpacity>
@@ -128,6 +193,7 @@ export default class CategoryScreen extends React.PureComponent {
   }
 
   render() {
+    const filteredCategories = this.props.data.filter(createFilter(this.state.searchTerm, KEYS_TO_FILTER))
     return(
       <Container>
         <Header>
@@ -147,23 +213,40 @@ export default class CategoryScreen extends React.PureComponent {
           </Right>
         </Header>
 
+        <SearchBar 
+          lightTheme
+          onChangeText={(term) => this.searchUpdated(term)}
+          platform={Platform.OS === 'ios' ? 'ios' : 'android'}
+          placeholder='Tìm kiếm...'
+          containerStyle={{ backgroundColor: '#F8F8F8', borderTopWidth: 0 }}
+          inputStyle={{ backgroundColor: '#fff' }}
+        />
+
         {/* screen popup to add new Category */}
         <Modal
           animationType="slide"
           transparent={false}
           visible={this.props.cateModalVisible}
+          onRequestClose={() => {}}
         >
           {this.renderAddCateModal()}
         </Modal>
         {/* end */}
 
+        {/* screen popup to edit Category */}
+        <Modal
+          animationType="slide"
+          transparent={false}
+          visible={this.props.editCateModalVisible}
+          onRequestClose={() => {}}
+        >
+          {this.renderEditCateModal()}
+        </Modal>
+        {/* end */}
+
         <Content padder style={{ backgroundColor: '#fff' }}>
           {this.props.isFetching ? <Spinner /> : 
-            <FlatList 
-              data={this.props.data}
-              renderItem={this._renderItem}
-              keyExtractor={item => item._id}
-            />}
+            filteredCategories.map(item => this._renderItem({item}))}
         </Content>
       </Container>
     )

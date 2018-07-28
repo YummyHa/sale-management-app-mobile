@@ -13,6 +13,9 @@ import Summary from '../container/SummaryContainer/reducer';
 import Bill from '../container/BillContainer/reducer';
 import Sidebar from '../container/SidebarContainer/reducer';
 import Auth from '../container/LoginContainer/reducer';
+import Receipt from '../container/ReceiptContainer/reducer';
+import Producer from '../container/ProducerContainer/reducer';
+import Message from '../container/ContactContainer/reducer';
 
 export default combineReducers({
   auth: Auth,
@@ -27,5 +30,8 @@ export default combineReducers({
   edit_product: EditProdcut,
   summary: Summary,
   bill: Bill,
-  sidebar: Sidebar
+  sidebar: Sidebar,
+  receipt: Receipt,
+  producer: Producer,
+  message: Message,
 });

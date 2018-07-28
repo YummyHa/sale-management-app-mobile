@@ -1,6 +1,6 @@
 import React from 'react'
 import { Text, Container, List, ListItem, Content, Toast, View } from 'native-base'
-import { AsyncStorage } from 'react-native'
+import { AsyncStorage, FlatList } from 'react-native'
 import Axios from 'axios'
 
 import Colors from '../../../constants/Colors';
@@ -22,6 +22,10 @@ const routes = [
   {
     route: 'Customers',
     caption: 'Khách hàng',
+  },
+  {
+    route: 'Producer',
+    caption: 'Nhà cung cấp',
   },
   {
     route: 'Logout',
@@ -58,6 +62,24 @@ export default class SideBar extends React.PureComponent {
     }
   }
 
+  renderItem = ({ item }) => {
+    return (
+      <ListItem
+        button
+        onPress={() => {
+          if (item.route === 'Logout') {
+            this.logOut()
+          } else {
+            this.props.navigation.navigate(item.route);
+          }
+        }}
+        noBorder
+      >
+        <Text>{item.caption}</Text>
+      </ListItem>
+    );
+  }
+
   render() {
     return (
       <Container>
@@ -67,26 +89,11 @@ export default class SideBar extends React.PureComponent {
           <Text style={{ color: '#fff' }}>{this.props.user.email}</Text>
         </View>
         <Content>
-          <List 
+          <FlatList 
             style={{ marginTop: 20 }}
-            dataArray={routes}
-            renderRow={data => {
-              return (
-                <ListItem
-                  button
-                  onPress={() => {
-                    if (data.route === 'Logout') {
-                      this.logOut()
-                    } else {
-                      this.props.navigation.navigate(data.route);
-                    }
-                  }}
-                  noBorder
-                >
-                  <Text>{data.caption}</Text>
-                </ListItem>
-              )
-            }}
+            data={routes}
+            keyExtractor={data => data.route}
+            renderItem={this.renderItem}
           />
         </Content>
       </Container>

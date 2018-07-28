@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Content, Header, Left, Body, Right, Text, Title, Button, Icon, 
-  ListItem, Thumbnail, Spinner } from 'native-base';
-import { Platform } from 'react-native';
+  ListItem, Thumbnail, Spinner, View } from 'native-base';
+import { Platform, TouchableOpacity } from 'react-native';
 import LoadingSpinner from 'react-native-loading-spinner-overlay';
  
 import styles from './styles';
@@ -16,7 +16,7 @@ class AddProduct extends React.PureComponent {
           <Left>
             <Button transparent onPress={() => this.props.onGoBack()}>
               <Icon active ios='ios-arrow-back' android='md-arrow-back' style={styles.headerIconStyle} />
-              {Platform.OS === 'ios' ? <Text style={styles.headerBackText}>Lùi</Text> : <View />}
+              {Platform.OS === 'ios' ? <Text style={styles.headerBackText}>Lùi</Text> : null}
             </Button>
           </Left>
 
@@ -25,9 +25,9 @@ class AddProduct extends React.PureComponent {
           </Body>
 
           <Right>
-            <Button transparent onPress={() => this.props.onCreateProduct()}>
-              <Text style={styles.headerBackText}>Tạo</Text>
-            </Button>
+            <TouchableOpacity onPress={() => this.props.onCreateProduct()} style={{ flexDirection: 'row', alignContent: 'flex-end' }}>
+              <Text style={styles.headerIconStyle}>Tạo</Text>
+            </TouchableOpacity>
           </Right>
         </Header>
 

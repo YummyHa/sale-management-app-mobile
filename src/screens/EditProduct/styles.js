@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform } from "react-native";
 
 import Colors from '../../../constants/Colors';
 
@@ -7,10 +7,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#FBFAFA'
   },
   headerIconStyle: {
-    color: Colors.tintColor
+    color: Platform.OS === 'ios' ? Colors.tintColor : '#fff'
   },
   headerBackText: {
-    color: Colors.tintColor
+    color: Platform.OS === 'ios' ? Colors.tintColor : '#fff'
   }
 });
 

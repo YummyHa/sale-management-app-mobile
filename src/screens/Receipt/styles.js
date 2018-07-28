@@ -20,11 +20,6 @@ const styles = StyleSheet.create({
   noBottomBorder: {
     borderBottomWidth: 0
   },
-  cartIconStyle: {
-    paddingTop: 5,
-    fontSize: 28,
-    color: Colors.secondTintColor
-  },
   itemWrapper: {
     borderWidth: 0.2,
     borderColor: Colors.textColor,
@@ -32,9 +27,31 @@ const styles = StyleSheet.create({
     margin: 5,
     marginBottom: 0,
   },
-  addProductFAB: {
-    backgroundColor: Colors.secondTintColor
-  }
+  searchBoxStyle: {
+    backgroundColor: '#fff',
+    flexDirection: 'row',
+    margin: 5,
+    padding: 10,
+    alignItems: 'center',
+    borderRadius: 5,
+  },
+  total: { 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    padding: 15, 
+    backgroundColor: Colors.secondTintColor 
+  },
+  listItem: {
+    paddingTop: 10,
+    paddingRight: 10,
+    paddingTop: 5,
+    paddingBottom: 5,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: '#fff',
+    borderBottomWidth: 0,
+    borderBottomColor: Colors.textColor
+  },
 });
 
 export default styles;

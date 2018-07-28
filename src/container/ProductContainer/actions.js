@@ -4,6 +4,22 @@ import { AsyncStorage } from 'react-native';
 
 import URL from '../../../constants/serverUrl';
 
+export const fetchUser = () => async dispatch => {
+  const token = await AsyncStorage.getItem('userToken');
+
+  var user = await axios.get(`${URL}/api/users/me`, {
+    headers: { 'x-auth': token }
+  });
+
+  dispatch({ type: 'GET_USER_DONE', payload: user.data });
+}
+
+export const fetchMessages = (room) => async dispatch => {
+  var msgs = await axios.get(`${URL}/api/messages/${room}`);
+
+  dispatch({ type: 'FETCH_MESSAGES', payload: msgs.data });
+}
+
 export const fetchListProducts = () => async dispatch => {
   try {
     let token = await AsyncStorage.getItem('userToken');
@@ -48,6 +64,19 @@ export const fetchListOrders = () => async dispatch => {
     dispatch({ type: 'FETCH_ORDER_SUCCESS', payload: data.data });
   } catch (error) {
     console.log('fetch order failed', error.message);
+  }
+}
+
+export const fetchListReceipts = () => async dispatch => {
+  try {
+    let token = await AsyncStorage.getItem('userToken');
+    let data = await axios.get(`${URL}/api/receipts`, {
+      headers: { 'x-auth': token }
+    });
+
+    dispatch({ type: 'FETCH_RECEIPT_SUCCESS', payload: data.data });
+  } catch (error) {
+    console.log('fetch receipt failed', error.message);
   }
 }
 

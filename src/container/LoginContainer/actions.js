@@ -11,8 +11,6 @@ export const fetchListBranches = () => async dispatch => {
       headers: { 'x-auth': token }
     });
 
-    console.log(data.data);
-
     dispatch({ type: 'FETCH_BRANCHES_SUCCESS', payload: data.data })
   } catch (error) {
     console.log('fetch branches failed with message:', error.message);

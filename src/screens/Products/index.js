@@ -1,16 +1,25 @@
 import React from "react";
 import { Container, Content, Header, Left, Body, Right, Text, Title, Button, Icon, 
   ListItem, Thumbnail, Spinner, View, Badge, Fab } from 'native-base';
-import { FlatList, StatusBar, TouchableOpacity } from 'react-native';
+import { StatusBar, TouchableOpacity, ScrollView } from 'react-native';
+import { createFilter } from 'react-native-search-filter';
+import { SearchBar } from 'react-native-elements';
 
 import styles from './styles';
 
+const KEYS_TO_FILTER = ['name', 'serial']
+
 class Products extends React.PureComponent {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
+      searchTerm: '',
       active: 'true'
     }
+  }
+
+  searchUpdated(term) {
+    this.setState({ searchTerm: term })
   }
 
   _renderItem = ({ item }) => {
@@ -31,7 +40,7 @@ class Products extends React.PureComponent {
             ))}
           </Body>
           <Right style={styles.noBottomBorder}>
-            <Text style={styles.priceStyle}>${item.sell_price}</Text>
+            <Text style={styles.priceStyle}>{item.sell_price}đ</Text>
             <TouchableOpacity style={{ padding: 3, }} onPress={() => this.props.onProductPress(item)} >
               <Icon ios='ios-cart-outline' android='md-cart' style={styles.cartIconStyle} />
             </TouchableOpacity>
@@ -42,6 +51,7 @@ class Products extends React.PureComponent {
   }
 
   render() {
+    const filteredProducts = this.props.data.filter(createFilter(this.state.searchTerm, KEYS_TO_FILTER))
     return (
       <Container style={styles.container}>
         <StatusBar translucent={false} />
@@ -65,24 +75,19 @@ class Products extends React.PureComponent {
           </Right>
         </Header>
 
+        <SearchBar 
+          lightTheme
+          onChangeText={(term) => this.searchUpdated(term)}
+          platform={Platform.OS === 'ios' ? 'ios' : 'android'}
+          placeholder='Tìm hàng...'
+          containerStyle={{ backgroundColor: '#F8F8F8', borderTopWidth: 0 }}
+          inputStyle={{ backgroundColor: '#fff' }}
+        />
+
         {/* Content */}
-        <Content>
-          {this.props.isFetching ? <Spinner /> : 
-          <FlatList 
-            data={this.props.data}
-            renderItem={this._renderItem}
-            keyExtractor={item => item._id}
-          />}
-        </Content>
-            
-        <TouchableOpacity>
-          <Fab
-            onPress={() => this.props.navigation.navigate('AddProduct')}
-            style={styles.addProductFAB}
-          >
-            <Icon name='add' style={{ fontSize: 34 }} />
-          </Fab>
-        </TouchableOpacity>
+        <ScrollView>
+          {filteredProducts.map(item => this._renderItem({item}))}
+        </ScrollView>
       </Container>
     ); 
   }

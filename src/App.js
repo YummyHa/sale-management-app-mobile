@@ -25,11 +25,11 @@ import EditProduct from './container/EditProductContainer';
 import Welcome from './container/WelcomeContainer';
 import Contact from './container/ContactContainer';
 import Receipt from './container/ReceiptContainer';
+import Producer from './container/ProducerContainer';
 
 const ProductDrawer = createDrawerNavigator({
   ProductList: Products
 }, {
-  initialRouteName: 'ProductList',
   contentComponent: props => <Sidebar {...props} />
 });
 
@@ -44,7 +44,9 @@ const ProductStack = createStackNavigator({
   Customers: Customers,
   Settings: Settings,
   Receipt: Receipt,
+  Producer: Producer,
 }, {
+  initialRouteName: 'ProductHome',
   headerMode: 'none'
 })
 
@@ -107,7 +109,7 @@ const HomeStack = createBottomTabNavigator({
           break;
       }
       return (
-        <Text style={{ color: focused ? Colors.tabIconSelected : Colors.tabIconDefault, fontSize: 11 }}>{label}</Text>
+        Platform.OS === 'ios' ? <Text style={{ color: focused ? Colors.tabIconSelected : Colors.tabIconDefault, fontSize: 11 }}>{label}</Text> : null
       );
     },
   }),
@@ -123,15 +125,16 @@ const AuthStack = createStackNavigator({
   Login: Login,
   Welcome: Welcome
 }, {
-  headerMode: 'none'
+  initialRouteName: 'Login',
+  headerMode: 'none',
 })
 
 const RootStackNavigator = createSwitchNavigator({
+  AuthLoading: AuthLoading,
   Auth: AuthStack, 
   Home: HomeStack,
-  AuthLoading: AuthLoading
 }, {
-  initialRouteName: 'AuthLoading'
+  initialRouteName: 'AuthLoading',
 });
 
 export default class App extends React.PureComponent {

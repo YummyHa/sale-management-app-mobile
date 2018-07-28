@@ -13,10 +13,8 @@ class Cart extends Component {
         <Header>
           <Left>
             <Button transparent onPress={() => this.props.toggleModal()}>
-              <Icon
-                name="close"
-                style={{ color: Colors.tintColor }}
-              />
+              <Icon name="close" style={styles.headerIconStyle} />
+              {Platform.OS === 'ios' ? <Text style={styles.headerText}>Huỷ</Text> : null}
             </Button>
           </Left>
           <Body>
@@ -139,6 +137,7 @@ class Cart extends Component {
           animationType='slide'
           transparent={false}
           visible={this.props.isModalVisible}
+          onRequestClose={() => {}}
         >
           {this.renderPayModal()}
         </Modal>

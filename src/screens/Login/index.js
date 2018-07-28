@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
-import { StyleSheet, Picker, Platform } from 'react-native';
+import { StyleSheet, Picker, Platform, Dimensions } from 'react-native';
 import { Container, Content, Button, Footer, View, Icon, Text, Header, 
   Title, Body, Tabs, Tab } from 'native-base';
+import Colors from '../../../constants/Colors';
  
+const { width, height } = Dimensions.get('window');
+
 class Login extends Component {
   renderLogin() {
     return <Content style={{ marginTop: 15 }}>
       {this.props.loginForm}
       <View padder>
-        <Button block onPress={() => this.props.onLogin()}>
+        <Button block style={{ backgroundColor: Colors.tintColor }} onPress={() => this.props.onLogin()}>
           <Text>Đăng nhập</Text>
         </Button>
       </View>
@@ -62,7 +65,7 @@ class Login extends Component {
       </View>
 
       <View padder>
-        <Button block onPress={() => this.props.onRegister()}>
+        <Button block style={{ backgroundColor: Colors.tintColor }} onPress={() => this.props.onRegister()}>
           <Text>Đăng ký</Text>
         </Button>
       </View>
@@ -70,41 +73,29 @@ class Login extends Component {
   }
 
   render() {
-    const {  } = styles;
-
     return (
       <Container>
-        <Header style={{ height: 200, borderBottomWidth: 0 }}>
+        <Header style={{ height: 100, borderBottomWidth: 0 }}>
           <Body style={{ alignItems: 'center' }}>
-            <Title>Sale Management</Title>
-            <View padder>
-              <Text style={{ color: '#000' }}>
-                Easy manager your shop need
-              </Text>
-            </View>
+            <Title>Shop Management</Title>
           </Body>
         </Header>
 
-        <Tabs>
-          <Tab heading='Đăng nhập'>
-            {this.renderLogin()}
-          </Tab>
+        <View style={{ flexDirection: 'row' }}>
+          <Button style={{ width: width/2, justifyContent: 'center', alignItems: 'center', borderRadius: 0, backgroundColor: '#F8F8F8' }}
+            onPress={() => this.props.changeTab(0)}>
+            <Text style={{color: this.props.selectedTab === 0 ? Colors.tintColor : '#222222'}}>Đăng nhập</Text>
+          </Button>
 
-          <Tab heading='Đăng ký'>
-            {this.renderRegister()}  
-          </Tab>
-        </Tabs>
+          <Button style={{ width: width/2, justifyContent: 'center', alignItems: 'center', borderRadius: 0, backgroundColor: '#F8F8F8' }}
+            onPress={() => this.props.changeTab(1)}>
+            <Text style={{color: this.props.selectedTab === 1 ? Colors.tintColor : '#222222'}}>Đăng ký</Text>
+          </Button>
+        </View>
+        {this.props.selectedTab === 0 ? this.renderLogin() : this.renderRegister()}
 
-        <Footer>
-          <View style={{ alignItems: 'center', opacity: 0.5, flexDirection: 'row' }}>
-            <View padder>
-              <Text style={{ color: '#000' }}>Made with</Text>
-            </View>
-            <Icon ios='ios-heart' android='md-heart' style={{ color: 'red' }} />
-            <View padder>
-              <Text style={{ color: '#000' }}>by Khanh Ha</Text>
-            </View>
-          </View>
+        <Footer style={{ backgroundColor: '#F8F8F8', alignItems: 'center' }}>
+          <Text>Copyright 2018</Text>
         </Footer>
       </Container>
     );

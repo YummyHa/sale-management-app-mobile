@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import _ from 'lodash';
 import { Container, Content, Header, Left, Body, Right, Text, Title, Button, Icon, View } from 'native-base';
-import { StatusBar, Image } from 'react-native'; 
+import { StatusBar, Image, Platform } from 'react-native'; 
 
 import styles from './styles';
 import Colors from "../../../constants/Colors";
@@ -17,8 +17,8 @@ class ProductDetail extends Component {
           {/* Header Left */}
           <Left>
             <Button transparent onPress={() => this.props.navigation.goBack()}>
-              <Icon name='arrow-back' style={{ color: Colors.tintColor }} />
-              <Text style={{ color: Colors.tintColor }}>Lùi</Text>
+              <Icon active ios='ios-arrow-back' android='md-arrow-back' style={styles.headerIconStyle} />
+              {Platform.OS === 'ios' ? <Text style={styles.headerBackText}>Lùi</Text> : null}
             </Button>
           </Left>
 

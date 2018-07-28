@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Item, Input, Icon, Toast, Form } from 'native-base';
+import { Item, Input, Icon, Toast, Form, Container, Text } from 'native-base';
 import { Field, reduxForm, formValueSelector, reset } from 'redux-form';
 import axios from 'axios';
 import { AsyncStorage, Alert } from 'react-native';
@@ -29,6 +29,14 @@ const alphaNumeric = value =>
     : undefined;
 
 class LoginForm extends Component {
+  state = {
+    selectedTab: 0,
+  }
+
+  onChangeTab(i) {
+    this.setState({ selectedTab: i })
+  }
+
   renderInput({ input, label, type, meta: { touched, error, warning } }) {
     return (
       <Item error={error && touched}>
@@ -118,7 +126,7 @@ class LoginForm extends Component {
         if (this.props.password !== this.props.re_password) {
           this.showToast('Mật khẩu nhập lại không đúng');
         } else {
-          let check = await this.checkRegister(this.props.email, this.props.password, this.props.shop_name, this.props.user_name, this.props.address, this.props.phone, this.props.branch);
+          let check = await this.checkRegister(this.props.email.toLowerCase(), this.props.password, this.props.shop_name, this.props.user_name, this.props.address, this.props.phone, this.props.branch);
           if (check) Alert.alert(
             'Thank you',
             'Cảm ơn bạn đã đăng ký tài khoản, xin hãy vui lòng đợi trong khi quản trị viên duyệt tài khoản của bạn!',
@@ -138,22 +146,18 @@ class LoginForm extends Component {
   }
 
   async login() {
-    if (this.props.valid) {
-      let user = await this.checkLogin(this.props.email, this.props.password);
-      if (user === null) {
-        this.showToastLoginFailed();
-      } else {
-        if (user.data.status === 0) {
-          await this.deleteUser(user);
-          this.props.navigation.navigate('Welcome');
-        } else {
-          let header = user.headers['x-auth'];
-          await AsyncStorage.setItem('userToken', header);
-          this.props.navigation.navigate('Home');
-        }
-      }
-    } else {
+    let user = await this.checkLogin(this.props.email.toLowerCase(), this.props.password);
+    if (user === null) {
       this.showToastLoginFailed();
+    } else {
+      if (user.data.status === 0) {
+        await this.deleteUser(user);
+        this.props.navigation.navigate('Welcome');
+      } else {
+        let header = user.headers['x-auth'];
+        await AsyncStorage.setItem('userToken', header);
+        this.props.navigation.navigate('Home');
+      }
     }
   }
 
@@ -227,6 +231,8 @@ class LoginForm extends Component {
         selected={this.props.branch}
         onChangeBranch={value => this.onChangeBranch(value)}
         onRegister={() => this.register()}
+        changeTab={(i) => this.onChangeTab(i)}
+        selectedTab={this.state.selectedTab}
       />
     );
   }
