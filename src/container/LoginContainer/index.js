@@ -146,6 +146,7 @@ class LoginForm extends Component {
   }
 
   async login() {
+    this.props.startLogin();
     let user = await this.checkLogin(this.props.email.toLowerCase(), this.props.password);
     if (user === null) {
       this.showToastLoginFailed();
@@ -159,6 +160,7 @@ class LoginForm extends Component {
         this.props.navigation.navigate('Home');
       }
     }
+    this.props.stopLogin();
   }
 
   onChangeBranch(value) {
@@ -233,6 +235,7 @@ class LoginForm extends Component {
         onRegister={() => this.register()}
         changeTab={(i) => this.onChangeTab(i)}
         selectedTab={this.state.selectedTab}
+        isLoggingIn={this.props.isLoggingIn}
       />
     );
   }
@@ -246,9 +249,9 @@ const selector = formValueSelector('Login');
 
 LoginContainerRedux = connect(
   state => {
-    const { branches, branch } = state.auth;
+    const { branches, branch, isLoggingIn } = state.auth;
     const { email, password, re_password, shop_name, user_name, address, phone } = selector(state, 'email', 'password', 're_password', 'shop_name', 'user_name', 'address', 'phone');
-    return { email, password, branches, branch, re_password, shop_name, user_name, address, phone }
+    return { email, password, branches, branch, re_password, shop_name, user_name, address, phone, isLoggingIn }
   },
   actions
 )(LoginContainer);

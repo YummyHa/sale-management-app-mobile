@@ -23,3 +23,15 @@ export const updateUser = ({ prop, value }) => async dispatch => {
     payload: { prop, value }
   })
 }
+
+export const startLogin = () => async dispatch => {
+  dispatch({
+    type: 'START_LOGGING_IN'
+  })
+}
+
+export const stopLogin = () => async dispatch => {
+  dispatch({
+    type: 'STOP_LOGGING_IN'
+  })
+}

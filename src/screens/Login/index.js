@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Picker, Platform, Dimensions } from 'react-native';
 import { Container, Content, Button, Footer, View, Icon, Text, Header, 
-  Title, Body, Tabs, Tab } from 'native-base';
+  Title, Body, Tabs, Tab, Spinner } from 'native-base';
 import Colors from '../../../constants/Colors';
  
 const { width, height } = Dimensions.get('window');
@@ -11,9 +11,13 @@ class Login extends Component {
     return <Content style={{ marginTop: 15 }}>
       {this.props.loginForm}
       <View padder>
-        <Button block style={{ backgroundColor: Colors.tintColor }} onPress={() => this.props.onLogin()}>
-          <Text>Đăng nhập</Text>
+        {this.props.isLoggingIn 
+        ? <Button block style={{ backgroundColor: Colors.tintColor }}>
+          <Spinner />
         </Button>
+        : <Button block style={{ backgroundColor: Colors.tintColor }} onPress={() => this.props.onLogin()}>
+          <Text>Đăng nhập</Text>
+        </Button>}
       </View>
     </Content>
   }
