@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Modal } from 'react-native';
+import { Modal, Alert } from 'react-native';
 import { Toast } from 'native-base';
 import _ from 'lodash';
 
 import CategoryScreen from '../../screens/Category';
 
-import { categoryUpdate, updateAttrList, addNewCategory, parseValueToEdit } from './actions';
+import { categoryUpdate, updateAttrList, addNewCategory, parseValueToEdit, editCategory, deleteCategory } from './actions';
 import { fetchListCategories } from '../ProductContainer/actions';
 
 class CategoryContainer extends Component {
@@ -58,7 +58,36 @@ class CategoryContainer extends Component {
   }
 
   async onEditCategory() {
+    var _id = this.props.editingID;
+    var name = this.props.cateName.trim();
+    var desc = this.props.cateDesc.trim();
+    var attribute = this.props.attr;
 
+    if (name === '') {
+      this.props.categoryUpdate({ prop: 'checkMessage', value: 'Vui lòng nhập tên loại' });
+    } else {
+      await this.props.editCategory({ _id, name, desc, attribute },
+        () => this.showToast('Lưu thành công!'),
+        () => this.showToast('Lưu thất bại!'));
+      await this.props.fetchListCategories();
+      this.toggleEditModal();
+    }
+  }
+
+  async onDelete(id) {
+    Alert.alert(
+      'Cảnh báo',
+      'Bạn có chắc muốn xoá loại sản phẩm này chứ?',
+      [
+        {text: 'Không', style: 'cancel'},
+        {text: 'Có', onPress: async () => { 
+          await this.props.deleteCategory(id, () => this.showToast('Xoá thành công!'),
+          () => this.showToast('Xoá thất bại!')); 
+          this.props.fetchListCategories(); 
+        }}
+      ],
+      {cancelable: false}
+    )
   }
 
   async onOpenEditCategoryPage(id) {
@@ -98,15 +127,16 @@ class CategoryContainer extends Component {
         check={this.props.checkMessage}
         onOpenEditCategoryPage={(id) => this.onOpenEditCategoryPage(id)}
         onEditCategory={() => this.onEditCategory()}
+        onDelete={(id) => this.onDelete(id)}
       />
     )
   }
 }
 
 const mapStateToProps = (state) => {
-  const { categories, isFetchingCategories, cateName, cateDesc, tempAttr, attr, checkMessage, isSavingCate } = state.category;
+  const { categories, isFetchingCategories, cateName, cateDesc, tempAttr, attr, checkMessage, isSavingCate, editingID } = state.category;
 
-  return { categories, isFetchingCategories, cateName, cateDesc, tempAttr, attr, checkMessage, isSavingCate }
+  return { categories, isFetchingCategories, cateName, cateDesc, tempAttr, attr, checkMessage, isSavingCate, editingID }
 }
 
 const mapDispatchToProps = {
@@ -114,7 +144,9 @@ const mapDispatchToProps = {
   updateAttrList,
   categoryUpdate,
   addNewCategory,
-  parseValueToEdit
+  parseValueToEdit,
+  editCategory,
+  deleteCategory
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CategoryContainer);

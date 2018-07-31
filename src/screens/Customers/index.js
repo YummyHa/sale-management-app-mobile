@@ -92,8 +92,7 @@ class Customers extends Component {
         <Header>
           <Left>
             <Button transparent onPress={() => this.props.onCancelEdit()} >
-            <Icon name="close" style={styles.headerIconStyle} />
-              {Platform.OS === 'ios' ? <Text style={styles.headerText}>Huỷ</Text> : null}
+              {Platform.OS === 'ios' ? <Text style={styles.headerIconStyle}>Huỷ</Text> : <Icon name="close" style={styles.headerIconStyle} />}
             </Button>
           </Left>
 
@@ -139,8 +138,7 @@ class Customers extends Component {
         <Header>
           <Left>
             <Button transparent onPress={() => this.props.toggleAddModal()} >
-              <Icon name="close" style={styles.headerIconStyle} />
-              {Platform.OS === 'ios' ? <Text style={styles.headerText}>Huỷ</Text> : null}
+              {Platform.OS === 'ios' ? <Text style={styles.headerIconStyle}>Huỷ</Text> : <Icon name="close" style={styles.headerIconStyle} />}
             </Button>
           </Left>
 
@@ -180,7 +178,7 @@ class Customers extends Component {
 
   renderItem = ({ item }) => {
     return (
-      <View style={{ borderColor: Colors.textColor, borderWidth: 0.2, borderStyle: 'dashed', borderRadius: 5, margin: 10, marginBottom: 0 }}>
+      <View style={{ backgroundColor: '#fff', borderColor: Colors.textColor, borderWidth: 0.2, borderStyle: 'dashed', borderRadius: 5, margin: 10, marginBottom: 0 }}>
         <ListItem
           avatar
           onPress={() => this.props.updateCustomerNameInOrderingList(item._id)}
@@ -218,7 +216,6 @@ class Customers extends Component {
           <Left>
             <Button transparent onPress={() => this.props.goBack()}>
               <Icon active name="arrow-back" style={styles.headerIconStyle} />
-              {Platform.OS === 'ios' ? <Text style={styles.headerIconStyle}>Lùi</Text> : null}
             </Button>
           </Left>
 

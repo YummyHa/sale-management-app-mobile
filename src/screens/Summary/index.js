@@ -202,13 +202,6 @@ class Summary extends Component {
         <Header>
           {/* Header Left */}
           <Left>
-            <Button transparent>
-              <Icon 
-                active
-                name='menu'
-                onPress={() => {}}
-              />
-            </Button>
           </Left>
 
           {/* Header Body */}

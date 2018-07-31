@@ -16,7 +16,6 @@ class EditProduct extends React.PureComponent {
           <Left>
             <Button transparent onPress={() => this.props.onGoBack()}>
               <Icon active ios='ios-arrow-back' android='md-arrow-back' style={styles.headerIconStyle} />
-              {Platform.OS === 'ios' ? <Text style={styles.headerBackText}>Huỷ</Text> : null}
             </Button>
           </Left>
 

@@ -50,9 +50,8 @@ class ContactContainer extends Component {
   }
 
   onSendMessage() {
-    var { _id, _admin } = this.props.user;
     var message = this.props.message;
-    var mes = { from: _id, to: _admin, text: message };
+    var mes = { text: message };
 
     // send to socket
     this.socket.emit('createMessage', mes, () => {

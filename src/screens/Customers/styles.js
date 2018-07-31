@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     paddingLeft: 10,
     paddingRight: 10,
-    backgroundColor: '#fff',
+    backgroundColor: '#bdbdbd',
     borderBottomWidth: 1,
     borderBottomColor: '#f8f8f8',
     justifyContent: 'space-between',
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     width: 100
   },
   listStyle: {
-    backgroundColor: '#fff'
+    backgroundColor: '#e9ebee'
   },
   headerIconStyle: {
     color: Platform.OS === 'ios' ? Colors.tintColor : '#fff'

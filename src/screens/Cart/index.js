@@ -13,8 +13,7 @@ class Cart extends Component {
         <Header>
           <Left>
             <Button transparent onPress={() => this.props.toggleModal()}>
-              <Icon name="close" style={styles.headerIconStyle} />
-              {Platform.OS === 'ios' ? <Text style={styles.headerText}>Huỷ</Text> : null}
+              {Platform.OS === 'ios' ? <Text style={styles.headerIconStyle}>Huỷ</Text> : <Icon name="close" style={styles.headerIconStyle} />}
             </Button>
           </Left>
           <Body>
@@ -118,7 +117,6 @@ class Cart extends Component {
           <Left>
             <Button transparent onPress={() => this.props.navigation.goBack()}>
               <Icon active ios='ios-arrow-back' android='md-arrow-back' style={styles.headerIconStyle} />
-              {Platform.OS === 'ios' ? <Text style={styles.headerBackText}>Lùi</Text> : <View />}
             </Button>
           </Left>
 

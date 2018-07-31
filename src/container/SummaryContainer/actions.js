@@ -34,11 +34,13 @@ export const calculateOrderSummaryByAll = (orders) => async dispatch => {
 
   _.forEach(orders, order => {
     _.forEach(order.products, prod => {
-      let result = _.find(allProduct, { '_id': prod._product._id });
-      if (result === undefined) {
-        allProduct.push({ _id: prod._product._id });
-        totalProductSelled++;
-      }  
+      if (prod._product !== null) {
+        let result = _.find(allProduct, { '_id': prod._product._id });
+        if (result === undefined) {
+          allProduct.push({ _id: prod._product._id });
+          totalProductSelled++;
+        }  
+      }
       totalProductQuantitySelled += prod.qty;
       totalAmount += prod.price * prod.qty;
       totalEarned += prod.price * prod.qty - prod.price_origin * prod.qty;
@@ -64,11 +66,14 @@ export const calculateOrderSummaryByDate = (orders, date) => async dispatch => {
     var orderDate = new Date(order.time);
     if (orderDate.getDate() === date.getDate() && orderDate.getMonth() === date.getMonth() && orderDate.getFullYear() === date.getFullYear()) {
       _.forEach(order.products, prod => {
-        let result = _.find(allProduct, { '_id': prod._product._id });
-        if (result === undefined) {
-          allProduct.push({ _id: prod._product._id });
-          totalProductSelled++;
-        }  
+        if (prod._product !== null) {
+          let result = _.find(allProduct, { '_id': prod._product._id });
+          if (result === undefined) {
+            allProduct.push({ _id: prod._product._id });
+            totalProductSelled++;
+          }  
+        }
+
         totalProductQuantitySelled += prod.qty;
         totalAmount += prod.price * prod.qty;
         totalEarned += prod.price * prod.qty - prod.price_origin * prod.qty;
@@ -95,11 +100,14 @@ export const calculateOrderSummaryByMonth = (orders, date) => async dispatch => 
     var orderDate = new Date(order.time);
     if (orderDate.getMonth() === date.getMonth() && orderDate.getFullYear() === date.getFullYear()) {
       _.forEach(order.products, prod => {
-        let result = _.find(allProduct, { '_id': prod._product._id });
-        if (result === undefined) {
-          allProduct.push({ _id: prod._product._id });
-          totalProductSelled++;
-        }  
+        if (prod._product !== null) {
+          let result = _.find(allProduct, { '_id': prod._product._id });
+          if (result === undefined) {
+            allProduct.push({ _id: prod._product._id });
+            totalProductSelled++;
+          }  
+        }
+
         totalProductQuantitySelled += prod.qty;
         totalAmount += prod.price * prod.qty;
         totalEarned += prod.price * prod.qty - prod.price_origin * prod.qty;
@@ -126,11 +134,14 @@ export const calculateOrderSummaryByYear = (orders, date) => async dispatch => {
     var orderDate = new Date(order.time);
     if (orderDate.getFullYear() === date.getFullYear()) {
       _.forEach(order.products, prod => {
-        let result = _.find(allProduct, { '_id': prod._product._id });
-        if (result === undefined) {
-          allProduct.push({ _id: prod._product._id });
-          totalProductSelled++;
-        }  
+        if (prod._product !== null) {
+          let result = _.find(allProduct, { '_id': prod._product._id });
+          if (result === undefined) {
+            allProduct.push({ _id: prod._product._id });
+            totalProductSelled++;
+          }  
+        }
+        
         totalProductQuantitySelled += prod.qty;
         totalAmount += prod.price * prod.qty;
         totalEarned += prod.price * prod.qty - prod.price_origin * prod.qty;

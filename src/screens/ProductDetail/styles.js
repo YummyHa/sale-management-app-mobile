@@ -33,6 +33,9 @@ const styles = StyleSheet.create({
   headerIconStyle: {
     color: Platform.OS === 'ios' ? Colors.tintColor : '#fff'
   },
+  container: {
+    backgroundColor: '#E9EBEE'
+  }
 });
 
 export default styles;

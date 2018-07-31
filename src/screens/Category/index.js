@@ -79,8 +79,7 @@ export default class CategoryScreen extends React.PureComponent {
         <Header>
           <Left>
             <Button transparent onPress={() => this.props.toggleAddModal()} >
-            <Icon name="close" style={styles.headerIconStyle} />
-              {Platform.OS === 'ios' ? <Text style={styles.headerText}>Huỷ</Text> : null}
+              {Platform.OS === 'ios' ? <Text style={styles.headerIconStyle}>Huỷ</Text> : <Icon name="close" style={styles.headerIconStyle} />}
             </Button>
           </Left>
 
@@ -126,8 +125,7 @@ export default class CategoryScreen extends React.PureComponent {
         <Header>
           <Left>
             <Button transparent onPress={() => this.props.toggleEditModal()} >
-            <Icon name="close" style={styles.headerIconStyle} />
-              {Platform.OS === 'ios' ? <Text style={styles.headerText}>Huỷ</Text> : null}
+              {Platform.OS === 'ios' ? <Text style={styles.headerIconStyle}>Huỷ</Text> : <Icon name="close" style={styles.headerIconStyle} />}
             </Button>
           </Left>
 
@@ -183,7 +181,7 @@ export default class CategoryScreen extends React.PureComponent {
             <TouchableOpacity style={{ padding: 3, marginBottom: 7 }} onPress={() => this.props.onOpenEditCategoryPage(item._id)}>
               <Text style={{ color: Colors.tintColor }}>Sửa</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={{ padding: 3 }} onPress={() => {}}>
+            <TouchableOpacity style={{ padding: 3 }} onPress={() => this.props.onDelete(item._id)}>
               <Text style={{ color: Colors.secondTintColor }}>Xoá</Text>
             </TouchableOpacity>
           </Right>
@@ -200,7 +198,6 @@ export default class CategoryScreen extends React.PureComponent {
           <Left>
             <Button transparent onPress={() => this.props.navigation.goBack()}>
               <Icon active ios='ios-arrow-back' android='md-arrow-back' style={styles.headerIconStyle} />
-              {Platform.OS === 'ios' ? <Text style={styles.headerText}>Lùi</Text> : <View />}
             </Button>
           </Left>
           <Body>

@@ -157,7 +157,7 @@ class Producer extends Component {
 
   renderItem = ({ item }) => {
     return (
-      <View style={{ borderColor: Colors.textColor, borderWidth: 0.2, borderStyle: 'dashed', borderRadius: 5, margin: 10, marginBottom: 0 }}>
+      <View style={{ backgroundColor: '#fff', borderColor: Colors.textColor, borderWidth: 0.2, borderStyle: 'dashed', borderRadius: 5, margin: 10, marginBottom: 0 }}>
         <ListItem
           avatar
           onPress={() => this.props.updateProducerNameinReceipt(item._id)}
@@ -193,7 +193,6 @@ class Producer extends Component {
           <Left>
             <Button transparent onPress={() => this.props.goBack()}>
               <Icon active name="arrow-back" style={styles.headerIconStyle} />
-              {Platform.OS === 'ios' ? <Text style={styles.headerIconStyle}>Lùi</Text> : null}
             </Button>
           </Left>
 

@@ -10,7 +10,7 @@ class ProductDetail extends Component {
   render() {
     const data = this.props.data;
     return (
-      <Container>
+      <Container style={styles.container}>
         <StatusBar translucent={false} />
         {/* Header */}
         <Header>
@@ -18,7 +18,6 @@ class ProductDetail extends Component {
           <Left>
             <Button transparent onPress={() => this.props.navigation.goBack()}>
               <Icon active ios='ios-arrow-back' android='md-arrow-back' style={styles.headerIconStyle} />
-              {Platform.OS === 'ios' ? <Text style={styles.headerBackText}>Lùi</Text> : null}
             </Button>
           </Left>
 
@@ -28,7 +27,14 @@ class ProductDetail extends Component {
           </Body>
 
           {/* Header Right */}
-          <Right />
+          <Right>
+            <Button transparent onPress={() => this.props.onEdit()}>
+              <Icon active ios='ios-create-outline' android='md-create' style={styles.headerIconStyle} />
+            </Button>
+            <Button transparent onPress={() => this.props.onDelete()}>
+              <Icon active ios='ios-trash-outline' android='md-trash' style={styles.headerIconStyle} />
+            </Button>
+          </Right>
         </Header>
 
         {/* Content */}
@@ -94,13 +100,6 @@ class ProductDetail extends Component {
             ))}
           </View>
         </Content>
-
-        <Button full style={{ backgroundColor: Colors.tintColor }} onPress={() => this.props.onEdit()}>
-          <Text style={{ color: '#fff' }}>Sửa sản phẩm</Text>
-        </Button>
-        <Button full style={{ backgroundColor: Colors.secondTintColor }} onPress={() => this.props.onDelete()} >
-          <Text style={{ color: '#fff' }}>Xoá sản phẩm</Text>
-        </Button>
       </Container>
     ); 
   }

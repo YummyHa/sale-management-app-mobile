@@ -7,6 +7,7 @@ const INITIAL_STATE = {
   attr: [],
   checkMessage: '',
   isSavingCate: false,
+  editingID: null,  
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -24,6 +25,7 @@ export default (state = INITIAL_STATE, action) => {
     case 'CATEGORY_SAVE_SUCCESS':
       return {
         ...state,
+        editingID: null,
         cateName: '',
         cateDesc: '',
         attr: [],
@@ -34,6 +36,7 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, isSavingCate: false }
     case 'PARSE_VALUE_TO_EDIT_CATEGORY':
       return { ...state,
+        editingID: action.payload._id,
         cateName: action.payload.name,
         cateDesc: action.payload.description,
         attr: action.payload.attributes,

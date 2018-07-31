@@ -21,7 +21,7 @@ class ProductForm extends React.PureComponent {
     }
 
     return (
-      <View>
+      <View style={styles.container}>
         {/* Image Section */}
         <TouchableOpacity onPress={() => this.props.onPickImageAction()}>
           <View style={styles.imageContainerStyle}>

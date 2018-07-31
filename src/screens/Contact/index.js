@@ -12,7 +12,7 @@ const { width, height } = Dimensions.get('window');
 
 class Welcome extends Component {
   _renderItem = ({ item }) => {
-    var time = moment(item.createAt).format('h:mm a');
+    var time = moment(item.createdAt).format('h:mm a');
     return (
       <View>
         {item.from === this.props.user 
@@ -51,7 +51,7 @@ class Welcome extends Component {
         : <FlatList 
           inverted
           data={this.props.messages}
-          keyExtractor={item => item.text}
+          keyExtractor={item => item._id}
           renderItem={this._renderItem}
           style={{ backgroundColor: '#F6F6F6', flex: 1, padding: 10 }}
         />}

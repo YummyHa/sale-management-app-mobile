@@ -4,7 +4,7 @@ import Colors from '../../../constants/Colors';
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#FBFAFA'
+    backgroundColor: '#E9EBEE'
   },
   priceStyle: {
     color: Colors.tintColor
@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
   itemWrapper: {
     borderWidth: 0.2,
     borderColor: Colors.textColor,
+    backgroundColor: '#fff',
     borderRadius: 5,
     margin: 5,
     marginBottom: 0,
